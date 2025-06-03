@@ -1,0 +1,5 @@
+// Importing CSS files
+import "./css/adoptionForm.css";
+
+// Importing JavaScript files
+import "./scripts/formWizard.js";

@@ -1,0 +1,31 @@
+name: Lint
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Grant Execute Permissions for Husky
+        run: chmod +x .husky/*
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Grant Execute Permissions for ESLint
+        run: chmod +x ./node_modules/.bin/eslint
+
+      - name: Run ESLint
+        run: npx --no-install eslint .
