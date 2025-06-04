@@ -132,10 +132,6 @@ module.exports = {
       favicon: "./src/assets/images/icons/reptileUniverseLogo1.png",
     }),
     new HtmlWebpackPlugin({
-      template: './src/pages/popups/character-creation-popup.html',
-      filename: 'character-creation-popup.html'
-    }),
-    new HtmlWebpackPlugin({
       template: './src/pages/popups/admin-add-skill-popup.html',
       filename: 'admin-add-skill-popup.html'
     }),

@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // List all popup files to load
   let popupsToLoad = [
-    "character-creation-popup.html",
     "admin-add-skill-popup.html"
   ];
   let loadedPopupsCount = 0;
@@ -47,10 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function initializePopupEvents() {
     console.log("Initializing popup events...");
     const popupConfigurations = [
-      {
-        popupId: "character-creation-popup-container",
-        triggerSelector: ".btn-create"
-      },
       {
         popupId: "skill-popup-container", // ID from admin-add-skill-popup.html
         triggerSelector: "#add-skill-btn"  // Button in adminSkills.html
