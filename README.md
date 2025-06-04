@@ -8,6 +8,7 @@ Welcome to the **SovereignQuest** project! This is a custom virtual tabletop (VT
 - [Installation](#installation)
 - [Development Setup](#development-setup)
 - [Scripts](#scripts)
+- [Backend Setup for Reptile Universe](docs/backendDocs/REPTILE_BACKEND_SETUP.md)
 - [Code Quality and Pre-Commit Hooks](#code-quality-and-pre-commit-hooks)
 - [Contributing](#contributing)
 - [License](#license)

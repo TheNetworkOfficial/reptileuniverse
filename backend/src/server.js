@@ -1,68 +1,61 @@
-const { ApolloServer } = require('@apollo/server');
-const { expressMiddleware } = require('@apollo/server/express4');
-const session = require('express-session');
-const express = require('express');
-const { json } = require('body-parser');
-const cors = require('cors');
-const { Skill } = require('./models'); // Adjust path if needed
 require('dotenv').config();
+const express = require('express');
+const session = require('express-session');
+const sequelize = require('./config/database');
+require('./config/mongoose'); // auto-connect to MongoDB
 
-const typeDefs = require('./schemas');
-const resolvers = require('./resolvers');
-const { rollDice } = require('./controllers/diceController');
+// ─── 1) Create the Express app ────────────────────────────────────────────────
+const app = express();
 
-const startServer = async () => {
-  const app = express();
+// ─── 2) Body parsing ──────────────────────────────────────────────────────────
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-  // Initialize Apollo Server
-  const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-  });
-
-  await server.start();
-
-  // Apply middleware
-  app.use(session({
-    secret: process.env.SESSION_SECRET || 'defaultsecret',
+// ─── 3) Session middleware (no Redis) ─────────────────────────────────────────
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true
-  }));
+    saveUninitialized: false,
+    // (MemoryStore is fine for development; it auto-expires on restart)
+    cookie: {
+      secure: false,
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+    },
+  })
+);
 
-  app.use(cors({
-    origin: 'http://localhost:9000', // Your Webpack dev server
-    credentials: true
-  }));
-  app.use(json());
-  app.use('/graphql', expressMiddleware(server));
-  app.post('/api/roll-dice', rollDice);
+// ─── 4) Test session route (optional) ─────────────────────────────────────────
+app.get('/api/test-session', (req, res) => {
+  if (!req.session.count) req.session.count = 0;
+  req.session.count += 1;
+  res.json({ visits: req.session.count });
+});
 
-  app.get('/api/skills', async (req, res) => {
-    try {
-      const skills = await Skill.findAll();
-      res.json(skills);
-    } catch (error) {
-      console.error('Error fetching skills:', error);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  });
-  
-  app.post('/api/skills', async (req, res) => {
-    console.log("POST /api/skills called with body:", req.body);
-    try {
-      const newSkill = await Skill.create(req.body);
-      console.log("New skill created:", newSkill);
-      res.status(201).json(newSkill);
-    } catch (error) {
-      console.error('Error creating skill:', error);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  });  
+// ─── 5) Mount your route modules ───────────────────────────────────────────────
+const authRoutes = require('./routes/auth');
+const reptileRoutes = require('./routes/reptiles');
+const adoptionRoutes = require('./routes/adoptions');
 
-  // Start Express server
-  app.listen(5000, () => {
-    console.log('Server is running on http://localhost:5000/graphql');
-  });
-};
+app.use('/api/auth', authRoutes);
+app.use('/api/reptiles', reptileRoutes);
+app.use('/api/adoptions', adoptionRoutes);
 
-startServer();
+// ─── 6) Test PostgreSQL connection & sync ──────────────────────────────────────
+sequelize
+  .authenticate()
+  .then(() => console.log('PostgreSQL connected'))
+  .catch(err => console.error('Postgres connection error', err));
+
+const User = require('./models/user');
+const Reptile = require('./models/reptile');
+const Adoption = require('./models/adoption');
+
+sequelize
+  .sync({ alter: true })
+  .then(() => console.log('All tables synced'))
+  .catch(err => console.error('Sync error', err));
+
+// ─── 7) Start the server ───────────────────────────────────────────────────────
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));

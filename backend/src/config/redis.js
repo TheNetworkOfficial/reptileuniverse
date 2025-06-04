@@ -1,4 +1,13 @@
-const Redis = require('ioredis');
-const redis = new Redis(process.env.REDIS_URL);
+const redis = require('redis');
+require('dotenv').config();
 
-module.exports = redis;
+const redisClient = redis.createClient({
+  url: process.env.REDIS_URL
+});
+
+redisClient
+  .connect()
+  .then(() => console.log('Redis client connected'))
+  .catch((err) => console.error('Redis connection error', err));
+
+module.exports = redisClient;
