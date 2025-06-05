@@ -19,9 +19,10 @@ const Reptile = sequelize.define(
     bio: DataTypes.TEXT,
     requirements: DataTypes.TEXT,
     image_urls: {
-      type: DataTypes.JSON,
-      defaultValue: []
-    }
+      type: DataTypes.JSON,      // or DataTypes.JSONB
+      allowNull: true,           // or false, if you prefer
+      defaultValue: [],          // Sequelize will emit `DEFAULT '[]'::json`
+    },
   },
   {
     tableName: 'reptiles',
