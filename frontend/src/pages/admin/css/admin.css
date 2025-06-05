@@ -1,21 +1,31 @@
-
-/*
 main {
-    padding: 2rem;
-  }
-  
-  section {
-    background-color: #fff;
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    border: 1px solid #ddd;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  h2 {
-    color: black;
-    border-bottom: 2px solid #333;
-    padding-bottom: 0.5rem;
-  }
+  margin: 120px 50px 40px 50px;
+}
 
-  */
+.tab-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tab-content {
+  display: none;
+}
+
+#animals .filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+#animals table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#animals th,
+#animals td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin | LEN Creative</title>
+    <title>Admin | Reptile Universe</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
@@ -22,22 +22,36 @@
     <!-- Main Content -->
 
     <main>
-        <section id="races">
-            <h2>Races</h2>
-            <div id="races-container"></div>
-        </section>
-        <section id="subraces">
-            <h2>Subraces</h2>
-            <div id="subraces-container"></div>
-        </section>
-        <section id="skills">
-            <h2>Skills</h2>
-            <div id="skills-container"></div>
-        </section>
-        <section id="talents">
-            <h2>Talents</h2>
-            <div id="talents-container"></div>
-        </section>
+      <div class="tab-buttons">
+        <button class="tab-button" data-target="clients">Clients</button>
+        <button class="tab-button" data-target="animals">Animals</button>
+        <button class="tab-button" data-target="stock">Stock</button>
+      </div>
+      <section id="clients" class="tab-content">
+        <p>Coming soon...</p>
+      </section>
+      <section id="animals" class="tab-content">
+        <div class="filters">
+          <input type="text" id="filter-name" placeholder="Filter by name" />
+          <input type="text" id="filter-species" placeholder="Filter by species" />
+          <button id="filter-btn">Apply</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Species</th>
+              <th>Sex</th>
+              <th>Age</th>
+              <th>Location</th>
+            </tr>
+          </thead>
+          <tbody id="animal-table-body"></tbody>
+        </table>
+      </section>
+      <section id="stock" class="tab-content">
+        <p>Coming soon...</p>
+      </section>
     </main>
     
     <!-- Placeholder for Footer -->

@@ -2,4 +2,4 @@
 import "./css/admin.css";
 
 // Importing JavaScript files
-import "./scripts/adminDataFetcher.js"
+import "./scripts/animalsTab.js"
