@@ -47,9 +47,11 @@ sequelize
   .then(() => console.log('PostgreSQL connected'))
   .catch(err => console.error('Postgres connection error', err));
 
-const User = require('./models/user');
-const Reptile = require('./models/reptile');
-const Adoption = require('./models/adoption');
+// Load models so Sequelize knows about them. The variables are not used
+// directly, so we avoid unused variable lint errors by not assigning them.
+require('./models/user');
+require('./models/reptile');
+require('./models/adoption');
 
 sequelize
   .sync({ alter: true })
