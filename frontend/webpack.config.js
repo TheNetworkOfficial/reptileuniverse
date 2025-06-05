@@ -135,6 +135,10 @@ module.exports = {
       template: './src/pages/popups/admin-add-skill-popup.html',
       filename: 'admin-add-skill-popup.html'
     }),
+    new HtmlWebpackPlugin({
+      template: './src/pages/popups/admin-add-animal-popup.html',
+      filename: 'admin-add-animal-popup.html'
+    }),
   ],
   devServer: {
     proxy: [

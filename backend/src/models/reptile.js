@@ -17,7 +17,7 @@ const Reptile = sequelize.define(
     sex: DataTypes.STRING(20),
     traits: DataTypes.STRING(100),
     bio: DataTypes.TEXT,
-    requirements: DataTypes.TEXT,                    // ← Added
+    requirements: DataTypes.TEXT,
     image_urls: {
       type: DataTypes.ARRAY(DataTypes.TEXT),
       defaultValue: []
