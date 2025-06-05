@@ -19,7 +19,7 @@ const Reptile = sequelize.define(
     bio: DataTypes.TEXT,
     requirements: DataTypes.TEXT,
     image_urls: {
-      type: DataTypes.ARRAY(DataTypes.TEXT),
+      type: DataTypes.JSON,
       defaultValue: []
     }
   },
