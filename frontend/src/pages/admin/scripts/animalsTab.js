@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   filterBtn.addEventListener('click', applyFilters);
 
-  document.addEventListener('popupsLoaded', () => {
+    document.addEventListener('popupsLoaded', () => {
     const form = document.getElementById('add-animal-form');
     const cancelBtn = document.getElementById('cancel-add-animal');
     const popup = document.getElementById('animal-popup-container');
@@ -57,19 +57,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (form) {
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const images = form.image_urls.value
-          ? form.image_urls.value.split(',').map((s) => s.trim()).filter(Boolean)
-          : [];
         const data = {
           name: form.name.value,
           species: form.species.value,
           age: form.age.value,
           location: form.location.value,
-          sex: form.sex.value,
-          traits: form.traits.value,
-          bio: form.bio.value,
-          requirements: form.requirements.value,
-          image_urls: images,
         };
 
         try {
@@ -96,7 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+
   loadAnimals();
 });
-frontend/src/pages/popups/admin-add-animal-popup.html
-New
