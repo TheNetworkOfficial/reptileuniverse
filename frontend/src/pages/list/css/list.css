@@ -40,8 +40,8 @@
 #animal-list .animal-tile {
   display: flex;
   flex-direction: column;
-  height: 300px; /* Fixed height for consistency */
-  width: 300px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   text-decoration: none;
   color: #333;
   border: 1px solid #ddd;
@@ -60,12 +60,11 @@
   height: 80%;
   width: 100%;
   object-fit: cover;
-  display: block;
 }
 
 /* Info area (name and species) takes up bottom 20% */
 #animal-list .tile-info {
-  height: 20%;
+  min-height: 25%;
   padding: 5px 10px;
   background-color: #f8f8f8;
   text-align: center;
@@ -89,17 +88,66 @@
 
 /* Mobile adaptation: 2 tiles per row on small screens */
 @media (max-width: 600px) {
-
+  /* 1) Shrink the section padding so it’s not 10vw on mobile */
   #animal-list {
     margin: 20px 10px;
-  }
-  #animal-list .tile-container {
-    grid-template-columns: repeat(2, 1fr);
-    padding: 0px 10px;
+    padding: 0 10px;       /* small fixed padding, not 10vw */
   }
 
+  /* 2) Two columns, full‐width grid‐container */
+  #animal-list .tile-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 10px;
+    width: 100%;
+    padding: 0;
+  }
+
+  /* 3) Each tile remains a square, flex splits children 80/20 */
   #animal-list .animal-tile {
-    height: 180px;
-    width: 180px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    aspect-ratio: 1 / 1;        /* stay square */
+    text-decoration: none;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  #animal-list .animal-tile:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  /* 4) Image gets 8 parts out of 10 (80%) */
+  #animal-list .animal-tile img {
+    flex: 8 8 0;                /* 80% of parent’s height */
+    width: 100%;
+    object-fit: cover;
+  }
+
+  /* 5) Info gets 2 parts out of 10 (20%) */
+  #animal-list .tile-info {
+    flex: 2 2 0;                /* 20% of parent’s height */
+    padding: 5px 10px;
+    background-color: #f8f8f8;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;     /* include padding in that 20% */
+  }
+  #animal-list .tile-info h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #000;
+  }
+  #animal-list .tile-info p {
+    margin: 0;
+    font-size: 16px;
+    color: #000;
   }
 }

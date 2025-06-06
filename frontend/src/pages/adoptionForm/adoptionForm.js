@@ -3,3 +3,4 @@ import "./css/adoptionForm.css";
 
 // Importing JavaScript files
 import "./scripts/formWizard.js";
+import "./scripts/adoptionFormLoader.js";
