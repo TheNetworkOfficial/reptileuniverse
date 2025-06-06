@@ -143,7 +143,7 @@ module.exports = {
   devServer: {
     proxy: [
       {
-        context: ['/api', '/graphql'],   // URLs to forward
+        context: ['/api', '/graphql', '/uploads'],   // URLs to forward
         target: 'http://localhost:3000',  // your backend
         changeOrigin: true,               // host header rewrite
         secure: false,                    // if you're using self-signed certs

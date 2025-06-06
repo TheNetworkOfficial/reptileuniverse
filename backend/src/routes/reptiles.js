@@ -4,6 +4,7 @@ const router = express.Router();
 const Reptile = require('../models/reptile');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
 // ─── 1) Set up multer storage engine ──────────────────────────────────────────
 const storage = multer.diskStorage({
@@ -90,8 +91,6 @@ router.post('/', upload.array('images', 5), async (req, res) => {
 });
 
 // ─── 4) PUT /api/reptiles/:id ──────────────────────────────────────────────────
-// If you want to allow updating existing reptiles (including changing images),
-// you can do something similar. For example, replace old images or append new ones:
 router.put('/:id', upload.array('images', 5), async (req, res) => {
   try {
     const reptile = await Reptile.findByPk(req.params.id);
@@ -111,17 +110,39 @@ router.put('/:id', upload.array('images', 5), async (req, res) => {
       requirements,
     } = req.body;
 
+    // ─── New: Parse deleteImages JSON from the form (array of URLs) ────────
+    let imageUrls = reptile.image_urls || [];
+    if (req.body.deleteImages) {
+      let toDelete;
+      try {
+        toDelete = JSON.parse(req.body.deleteImages);
+      } catch (parseErr) {
+        return res.status(400).json({ error: 'Invalid deleteImages format' });
+      }
+      if (Array.isArray(toDelete) && toDelete.length > 0) {
+        // Filter out any URLs the client wants deleted
+        imageUrls = imageUrls.filter((url) => !toDelete.includes(url));
+
+        // Optionally: delete the actual files from disk
+        toDelete.forEach((url) => {
+          const filename = url.split('/').pop();
+          const filepath = path.join(__dirname, '../uploads', filename);
+          fs.unlink(filepath, (err) => {
+            if (err) console.error('Error deleting file:', filepath, err);
+          });
+        });
+      }
+    }
+
     // 4.2) If new files were uploaded, build their URLs
     const newImageUrls = (req.files || []).map((file) => `/uploads/${file.filename}`);
 
-    // 4.3) Decide your logic: overwrite the old array, or append to it? Here’s an example
-    let imageUrls = reptile.image_urls || [];
+    // 4.3) Append new ones onto existing array (after any deletions above)
     if (newImageUrls.length > 0) {
-      // For instance, append new ones onto existing array:
       imageUrls = [...imageUrls, ...newImageUrls];
     }
 
-    // 4.4) Update fields
+    // 4.4) Update fields (including the filtered/updated image_urls array)
     await reptile.update({
       name,
       species,

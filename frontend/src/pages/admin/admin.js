@@ -3,4 +3,3 @@ import "./css/admin.css";
 
 // Importing JavaScript files
 import "./scripts/animalsTab.js";
-import "./scripts/addAnimal.js";
