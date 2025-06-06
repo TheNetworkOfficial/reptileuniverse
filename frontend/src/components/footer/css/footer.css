@@ -73,3 +73,10 @@
   color: #5b92e5; /* Change color on hover/focus for visual feedback */
   text-decoration: none; /* Removes underline from links */
 }
+
+
+@media (max-width: 600px) {
+  .footer-about, .footer-links, .footer-contact {
+    display: none; /* Hide by default */
+  }
+}

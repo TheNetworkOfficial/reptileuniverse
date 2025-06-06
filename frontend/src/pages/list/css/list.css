@@ -57,7 +57,7 @@
 
 /* Image takes up 80% of tile */
 #animal-list .animal-tile img {
-  height: 80%;
+  height: 75%;
   width: 100%;
   object-fit: cover;
 }
@@ -123,14 +123,14 @@
 
   /* 4) Image gets 8 parts out of 10 (80%) */
   #animal-list .animal-tile img {
-    flex: 8 8 0;                /* 80% of parent’s height */
+    height: 70%;
     width: 100%;
     object-fit: cover;
   }
 
   /* 5) Info gets 2 parts out of 10 (20%) */
   #animal-list .tile-info {
-    flex: 2 2 0;                /* 20% of parent’s height */
+    height: 30%;
     padding: 5px 10px;
     background-color: #f8f8f8;
     text-align: center;
