@@ -1,32 +1,31 @@
-const { DataTypes } = require('sequelize');
+// models/reptile.js
+const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
-const Reptile = sequelize.define(
-  'Reptile',
+class Reptile extends Model {}
+
+Reptile.init(
   {
-    name: {
-      type: DataTypes.STRING(100),
-      allowNull: false
-    },
-    species: {
-      type: DataTypes.STRING(100),
-      allowNull: false
-    },
-    age: DataTypes.STRING(50),
-    location: DataTypes.STRING(100),
-    sex: DataTypes.STRING(20),
-    traits: DataTypes.STRING(100),
-    bio: DataTypes.TEXT,
-    requirements: DataTypes.TEXT,
+    name: { type: DataTypes.STRING, allowNull: false },
+    species: { type: DataTypes.STRING, allowNull: false },
+    age: { type: DataTypes.INTEGER, allowNull: false },
+    location: { type: DataTypes.STRING },
+    sex: { type: DataTypes.STRING },
+    traits: { type: DataTypes.STRING },
+    bio: { type: DataTypes.TEXT },
+    requirements: { type: DataTypes.TEXT },
+
+    // Make sure this field is JSON (not STRING or ARRAY).
     image_urls: {
-      type: DataTypes.JSON,      // or DataTypes.JSONB
-      allowNull: true,           // or false, if you prefer
-      defaultValue: [],          // Sequelize will emit `DEFAULT '[]'::json`
+      type: DataTypes.JSON,
+      allowNull: true,
+      defaultValue: [], // Sequelize will create DEFAULT '[]'::json
     },
   },
   {
+    sequelize,
+    modelName: 'Reptile',
     tableName: 'reptiles',
-    timestamps: false
   }
 );
 

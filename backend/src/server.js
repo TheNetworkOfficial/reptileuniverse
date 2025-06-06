@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
+const path = require('path');
 const sequelize = require('./config/database');
 require('./config/mongoose'); // auto-connect to MongoDB
 
@@ -10,6 +11,13 @@ const app = express();
 // ─── 2) Body parsing ──────────────────────────────────────────────────────────
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// ─── 2.5) Serve uploaded files statically ────────────────────────────────────
+// If someone visits “/uploads/foo.jpg”, Express will look for “backend/uploads/foo.jpg”
+app.use(
+  '/uploads',
+  express.static(path.join(__dirname, 'uploads'))
+);
 
 // ─── 3) Session middleware (no Redis) ─────────────────────────────────────────
 app.use(

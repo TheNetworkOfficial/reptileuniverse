@@ -37,8 +37,14 @@
         <textarea id="animal-requirements" name="requirements"></textarea>
       </div>
       <div class="form-group">
-        <label for="animal-images">Image URLs (comma separated)</label>
-        <textarea id="animal-images" name="image_urls"></textarea>
+        <label for="animal-images">Upload Images</label>
+        <input
+          type="file"
+          id="animal-images"
+          name="images"
+          accept="image/*"
+          multiple
+        />
       </div>
       <div class="form-actions">
         <button type="submit" class="btn-get-started">Save</button>
