@@ -22,46 +22,48 @@
     <!-- Main Content -->
 
     <main>
-      <div class="tab-buttons">
-        <button class="tab-button" data-target="clients">Clients</button>
-        <button class="tab-button" data-target="animals">Animals</button>
-        <button class="tab-button" data-target="stock">Stock</button>
-      </div>
-      <section id="clients" class="tab-content">
-        <p>Coming soon...</p>
-      </section>
-      <section id="animals" class="tab-content">
-        <div class="filters">
-          <input type="text" id="filter-name" placeholder="Filter by name" />
-          <input
-            type="text"
-            id="filter-species"
-            placeholder="Filter by species"
-          />
-          <button id="filter-btn" class="btn-option">Apply</button>
-          <button id="add-animal-btn" class="btn-option">Add Animal</button>
+      <section class="admin-dashboard">
+        <div class="tab-buttons">
+          <button class="tab-button" data-target="clients">Clients</button>
+          <button class="tab-button" data-target="adoption-animals">Adoption Animals</button>
+          <button class="tab-button" data-target="stock">Stock</button>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Species</th>
-              <th>Sex</th>
-              <th>Age</th>
-              <th>Location</th>
-              <th>Traits</th>
-              <th>Bio</th>
-              <th>Requirements</th>
-              <th>Images</th>
-              <th>Update</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody id="animal-table-body"></tbody>
-        </table>
-      </section>
-      <section id="stock" class="tab-content">
-        <p>Coming soon...</p>
+        <section id="clients" class="tab-content">
+          <p>Coming soon...</p>
+        </section>
+        <section id="adoption-animals" class="tab-content">
+          <div class="filters">
+            <input type="text" id="filter-name" placeholder="Filter by name" />
+            <input
+              type="text"
+              id="filter-species"
+              placeholder="Filter by species"
+            />
+            <button id="filter-btn" class="btn-option">Apply</button>
+            <button id="add-animal-btn" class="btn-option">Add Animal</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Species</th>
+                <th>Sex</th>
+                <th>Age</th>
+                <th>Location</th>
+                <th>Traits</th>
+                <th>Bio</th>
+                <th>Requirements</th>
+                <th>Images</th>
+                <th>Update</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody id="animal-table-body"></tbody>
+          </table>
+        </section>
+        <section id="stock" class="tab-content">
+          <p>Coming soon...</p>
+        </section>
       </section>
     </main>
 

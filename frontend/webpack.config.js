@@ -17,6 +17,7 @@ module.exports = {
     list: "./src/pages/list/list.js",
     details: "./src/pages/details/details.js",
     adoptionForm: "./src/pages/adoptionForm/adoptionForm.js",
+    surrenderForm: "./src/pages/surrenderForm/surrenderForm.js",
     confirmation: "./src/pages/confirmation/confirmation.js",
   },
   output: {
@@ -125,7 +126,13 @@ module.exports = {
       chunks: ["main", "adoptionForm"],
       favicon: "./src/assets/images/icons/reptileUniverseLogo1.png",
     }),
-        new HtmlWebpackPlugin({
+    new HtmlWebpackPlugin({
+      template: "./src/pages/surrenderForm/surrenderForm.html",
+      filename: "surrenderForm.html",
+      chunks: ["main", "surrenderForm"],
+      favicon: "./src/assets/images/icons/reptileUniverseLogo1.png",
+    }),
+    new HtmlWebpackPlugin({
       template: "./src/pages/confirmation/confirmation.html",
       filename: "confirmation.html",
       chunks: ["main", "confirmation"],

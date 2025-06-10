@@ -323,3 +323,75 @@
 .btn-sign-up:hover {
   background-color: #ff5a4d;
 }
+
+
+/* Extra Small Devices (Portrait phones <576px) */
+@media (max-width: 767.98px) {
+  /* Hero → stack content vertically */
+  .hero {
+    flex-direction: column;
+    height: auto;
+    padding: 20px;
+  }
+  .hero-content {
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+  .hero-content h1 {
+    font-size: 1.8rem;
+  }
+  .hero-content p {
+    font-size: 1rem;
+  }
+  .btn-get-started {
+    font-size: 1rem;
+    padding: 10px 20px;
+    margin-top: 10px;
+    display: inline-block;
+  }
+  .hero-image {
+    display: none; /* Hide image on small screens */
+  }
+
+  /* Features → single column */
+  .features {
+    padding: 20px 10px;
+    background-color: #f9f9f9;
+    text-align: center;
+  }
+
+  .features-grid {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .feature-item-left,
+  .feature-item-right {
+    width: 100%;
+    padding: 20px 0px;
+  }
+
+  /* Creature Feature → fluid grid */
+  .creature-feature {
+    padding: 20px 50px;
+  }
+
+  #creature-feature-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 12px;              /* adjust gutter as you like */
+    justify-items: center;  
+    align-items: center;
+  }
+  /* make each tile a perfect square */
+  #creature-feature-list > * {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    /* if your tiles have background-images or <img> inside: */
+    object-fit: cover;      
+  }
+    /* hide every tile after the 4th */
+  #creature-feature-list > .animal-tile:nth-child(n+4):not(.see-all) {
+    display: none;
+  }
+}

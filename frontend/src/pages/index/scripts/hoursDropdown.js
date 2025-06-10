@@ -1,13 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
   // Set your real store hours here:
   const storeHours = {
-    Sunday:    '9:00 AM - 5:00 PM',
-    Monday:    '9:00 AM - 5:00 PM',
-    Tuesday:   '9:00 AM - 5:00 PM',
-    Wednesday: '9:00 AM - 5:00 PM',
-    Thursday:  '9:00 AM - 5:00 PM',
-    Friday:    '9:00 AM - 5:00 PM',
-    Saturday:  '9:00 AM - 5:00 PM',
+    Sunday:    'Closed',
+    Monday:    'Closed',
+    Tuesday:   '10:00 AM - 6:30 PM',
+    Wednesday: '10:00 AM - 6:30 PM',
+    Thursday:  '10:00 AM - 6:30 PM',
+    Friday:    '10:00 AM - 6:30 PM',
+    Saturday:  '9:00 AM - 4:30 PM',
   };
 
   const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];

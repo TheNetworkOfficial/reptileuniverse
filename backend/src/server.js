@@ -44,10 +44,12 @@ app.get('/api/test-session', (req, res) => {
 const authRoutes = require('./routes/auth');
 const reptileRoutes = require('./routes/reptiles');
 const adoptionRoutes = require('./routes/adoptions');
+const surrenderRoutes = require('./routes/surrenders');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/reptiles', reptileRoutes);
 app.use('/api/adoptions', adoptionRoutes);
+app.use('/api/surrenders',  surrenderRoutes);
 
 // ─── 6) Test PostgreSQL connection & sync ──────────────────────────────────────
 sequelize
@@ -60,6 +62,7 @@ sequelize
 require('./models/user');
 require('./models/reptile');
 require('./models/adoption');
+require('./models/surrender');
 
 sequelize
   .sync({ alter: true })

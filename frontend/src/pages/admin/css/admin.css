@@ -1,4 +1,6 @@
-
+.admin-dashboard {
+  padding-top: 120px;
+}
 
 .tab-buttons {
   display: flex;
@@ -10,19 +12,19 @@
   display: none;
 }
 
-#animals .filters {
+#adoption-animals .filters {
   display: flex;
   gap: 10px;
   margin-bottom: 10px;
 }
 
-#animals table {
+#adoption-animals table {
   width: 100%;
   border-collapse: collapse;
 }
 
-#animals th,
-#animals td {
+#adoption-animals th,
+#adoption-animals td {
   border: 1px solid #ccc;
   padding: 8px;
   text-align: left;
