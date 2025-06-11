@@ -41,3 +41,17 @@
   padding: 8px;
   text-align: left;
 }
+
+/* Pending-apps sortable columns */
+#pending-apps table th[data-sort] {
+  cursor: pointer;
+  user-select: none;
+}
+
+/* little arrows after the sorted column */
+#pending-apps table th.sorted-asc::after {
+  content: " ▲";
+}
+#pending-apps table th.sorted-desc::after {
+  content: " ▼";
+}

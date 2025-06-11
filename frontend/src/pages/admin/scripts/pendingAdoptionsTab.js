@@ -1,14 +1,58 @@
 // pendingAdoptionsTab.js
-// Handles loading and approving/denying adoption applications
+// Handles loading and approving/denying adoption applications, now with sortable columns
 
 document.addEventListener("DOMContentLoaded", () => {
   const tableBody = document.getElementById("pending-apps-body");
   let apps = [];
 
+  // ————— Sorting state & header elements —————
+  let currentSort = { key: null, direction: "asc" };
+  const pendingTable = document.querySelector("#pending-apps table");
+  const headers = pendingTable
+    ? pendingTable.querySelectorAll("th[data-sort]")
+    : [];
+
+  function sortApps() {
+    apps.sort((a, b) => {
+      const aVal = (a[currentSort.key] || "").toLowerCase();
+      const bVal = (b[currentSort.key] || "").toLowerCase();
+      return currentSort.direction === "asc"
+        ? aVal.localeCompare(bVal)
+        : bVal.localeCompare(aVal);
+    });
+  }
+
+  function updateHeaderIndicators() {
+    headers.forEach(th => {
+      th.classList.remove("sorted-asc", "sorted-desc");
+      if (th.dataset.sort === currentSort.key) {
+        th.classList.add(`sorted-${currentSort.direction}`);
+      }
+    });
+  }
+
+  headers.forEach(th => {
+    th.addEventListener("click", () => {
+      const sortKey = th.dataset.sort;
+      if (currentSort.key === sortKey) {
+        // toggle direction
+        currentSort.direction = currentSort.direction === "asc" ? "desc" : "asc";
+      } else {
+        currentSort.key = sortKey;
+        currentSort.direction = "asc";
+      }
+      sortApps();
+      renderList();
+      updateHeaderIndicators();
+    });
+  });
+
+  // ————— Load & render —————
   async function loadApps() {
     try {
       const res = await fetch("/api/adoption-apps/pending");
       apps = res.ok ? await res.json() : [];
+      if (currentSort.key) sortApps();
       renderList();
     } catch (err) {
       console.error("Failed to load applications", err);
@@ -17,19 +61,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderList() {
     tableBody.innerHTML = "";
-    apps.forEach((app) => {
+    apps.forEach(app => {
       const tr = document.createElement("tr");
       tr.dataset.id = app.id;
       tr.innerHTML = `
         <td>${app.reptileDescription || ""}</td>
         <td>${app.primaryName || ""}</td>
         <td>${app.primaryEmail || ""}</td>
-        <td><button class="view-app-btn btn-option">View</button></td>`;
+        <td><button class="view-app-btn btn-option">View</button></td>
+      `;
       tableBody.appendChild(tr);
     });
+    updateHeaderIndicators();
   }
 
-  // Popup references populated when popupsLoaded fires
+  // ————— Popup logic —————
   let popup, detailsElem, approveBtn, denyBtn;
   document.addEventListener("popupsLoaded", () => {
     popup = document.getElementById("adoption-app-popup-container");
@@ -43,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
       denyBtn.addEventListener("click", () => updateStatus("rejected"));
   });
 
-  tableBody.addEventListener("click", (e) => {
+  tableBody.addEventListener("click", e => {
     if (e.target.classList.contains("view-app-btn")) {
       const tr = e.target.closest("tr");
       if (tr) openPopup(tr.dataset.id);
@@ -51,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function openPopup(id) {
-    const app = apps.find((a) => String(a.id) === String(id));
+    const app = apps.find(a => String(a.id) === String(id));
     if (!app || !popup) return;
     popup.dataset.id = id;
     let html = "<table class='detail-table'>";
@@ -84,5 +130,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Initial load
   loadApps();
 });
