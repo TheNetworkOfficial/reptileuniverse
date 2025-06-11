@@ -116,7 +116,8 @@ router.put('/:id', upload.array('images', 5), async (req, res) => {
       let toDelete;
       try {
         toDelete = JSON.parse(req.body.deleteImages);
-      } catch (parseErr) {
+      } catch (err) {
+        console.error(err);
         return res.status(400).json({ error: 'Invalid deleteImages format' });
       }
       if (Array.isArray(toDelete) && toDelete.length > 0) {

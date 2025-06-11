@@ -20,17 +20,26 @@
                     <!-- Add more feature links as needed -->
                 </ul>
             </li>
-            <li><a href="login.html" class="btn-login">Login</a></li>
-                <!-- Profile dropdown, hidden by default -->
-                <li id="profile-dropdown" class="dropdown profile-dropdown" style="display:none;">
+            <!-- LOGIN button, shown when not authenticated -->
+            <li id="login-container">
+                <a href="login.html" class="btn-login">Log In</a>
+            </li>
+
+            <!-- PROFILE dropdown, hidden by default -->
+            <li id="profile-dropdown" class="dropdown" style="display:none;">
+                <a href="#" class="dropdown-trigger">
                 <img src="../../assets/images/icons/defaultAvatar.png"
-                    alt="Profile"
-                    class="profile-pic dropdown-trigger" />
+                    alt="Avatar"
+                    class="profile-pic"
+                    width="24" height="24"/>
+                <span class="profile-username">User</span>
+                <i class="fas fa-caret-down"></i>
+                </a>
                 <ul class="dropdown-content">
-                    <li><a href="profile.html">My Profile</a></li>
-                    <li><a href="myAnimals.html">My Animals</a></li>
-                    <li><a href="myAdoptions.html">Pending Adoptions</a></li>
-                    <li><a href="#" id="logout-btn">Log Out</a></li>
+                <li><a href="profile.html">My Profile</a></li>
+                <li><a href="myAnimals.html">My Animals</a></li>
+                <li><a href="myAdoptions.html">Pending Adoptions</a></li>
+                <li><a href="#" id="logout-btn">Log Out</a></li>
                 </ul>
             </li>
         </nav>

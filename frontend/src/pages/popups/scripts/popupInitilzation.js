@@ -4,7 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // List all popup files to load
   let popupsToLoad = [
     "admin-add-skill-popup.html",
-    "admin-add-animal-popup.html"
+    "admin-add-animal-popup.html",
+    "admin-health-inspections-popup.html"
   ];
   let loadedPopupsCount = 0;
 
@@ -54,6 +55,10 @@ document.addEventListener("DOMContentLoaded", () => {
       {
         popupId: "animal-popup-container", // ID from admin-add-animal-popup.html
         triggerSelector: "#add-animal-btn" // Button in admin.html
+      },
+      {
+        popupId: "inspection-popup-container", // ID from admin-inspection-popup.html
+        triggerSelector: ".inspection-cell" // Button in admin.html
       }
     ];
 

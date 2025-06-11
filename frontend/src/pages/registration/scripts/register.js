@@ -1,23 +1,27 @@
 // registration.js
-
-document.getElementById('registration-form').addEventListener('submit', function (e) {
+document
+  .getElementById("registration-form")
+  .addEventListener("submit", async (e) => {
     e.preventDefault();
+    const username = e.target.username.value.trim();
+    const email    = e.target.email.value.trim();
+    const password = e.target.password.value;
 
-    const username = document.getElementById('username').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-
-    fetch('http://localhost:3000/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, email, password })
-    })
-    .then(response => response.json())
-    .then(data => {
-        alert(data.message);
-        if (data.message === 'User registered successfully') {
-            window.location.href = 'login.html';
-        }
-    })
-    .catch(error => console.error('Error:', error));
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ username, email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        return alert("Error: " + data.error);
+      }
+      alert(data.message);
+      window.location.href = "login.html";
+    } catch (err) {
+      console.error("Registration failed:", err);
+      alert("Registration failed");
+    }
 });

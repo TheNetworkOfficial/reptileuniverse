@@ -1,21 +1,25 @@
-document.getElementById('login-form').addEventListener('submit', function (e) {
+document
+  .getElementById("login-form")
+  .addEventListener("submit", async (e) => {
     e.preventDefault();
+    const username = e.target.username.value.trim();
+    const password = e.target.password.value;
 
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-
-    fetch('http://localhost:3000/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ username, password }),
-        credentials: 'include' // Include cookies in the request
-    })
-    .then(response => response.json())
-    .then(data => {
-        alert(data.message);
-        if (data.message === 'Logged in successfully') {
-            window.location.href = 'index.html';
-        }
-    })
-    .catch(error => console.error('Error:', error));
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        return alert("Login failed: " + data.error);
+      }
+      alert(data.message);
+      window.location.href = "index.html"; // or your protected dashboard
+    } catch (err) {
+      console.error("Login error:", err);
+      alert("Login error");
+    }
 });
