@@ -9,7 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const reptileInput = document.getElementById("reptileDescription");
     if (reptileInput) {
       reptileInput.value = desc;
-      // 3) Dispatch a “change” event so formWizard.js picks up the new value
+      // Prevent editing when passed from the details page
+      reptileInput.readOnly = true;
+      // 3) Dispatch a "change" event so formWizard.js picks up the new value
       reptileInput.dispatchEvent(new Event("change", { bubbles: true }));
     }
   }

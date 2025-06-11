@@ -89,11 +89,6 @@
   right: 0;
 }
 
-/* Dropdown Menu Styles */
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
 .dropdown-content {
   display: none;
   position: absolute;

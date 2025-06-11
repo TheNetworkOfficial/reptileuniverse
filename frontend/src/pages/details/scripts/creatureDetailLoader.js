@@ -143,9 +143,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (applyBtn) {
         // ❷ When the user clicks it, redirect to adoptionForm.html
         applyBtn.addEventListener('click', () => {
-            // Pass the animal’s name in a query‐param called `reptileDescription`
+            // Pass the animal’s name and id via query parameters
             const encodedName = encodeURIComponent(animal.name);
-            window.location.href = `adoptionForm.html?reptileDescription=${encodedName}`;
+            const encodedId = encodeURIComponent(animal.id);
+            window.location.href = `adoptionForm.html?reptileDescription=${encodedName}&reptileId=${encodedId}`;
         });
         }
 

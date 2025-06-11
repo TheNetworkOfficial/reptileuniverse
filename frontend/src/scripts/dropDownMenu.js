@@ -5,15 +5,17 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.addEventListener('mouseover', event => {
         const dropdown = event.target.closest('.dropdown');
         if (dropdown) {
-            const dropdownContent = dropdown.querySelector('.dropdown-content');
-            if (dropdownContent) {
-                if (hideTimeout) {
-                    clearTimeout(hideTimeout);
-                }
-                dropdownContent.style.display = 'block';
-            }
-        }
-    });
+        const dropdownContent = dropdown.querySelector('.dropdown-content');
+
+        // ── NEW: close any other open menus ──────────────────────────────────
+        document.querySelectorAll('.dropdown-content').forEach(menu => {
+            if (menu !== dropdownContent) menu.style.display = 'none';
+        });
+
+        if (hideTimeout) clearTimeout(hideTimeout);
+        dropdownContent.style.display = 'block';
+     }
+ });
 
     // Hide dropdown with delay when mouse leaves the dropdown trigger or content
     document.body.addEventListener('mouseout', event => {
