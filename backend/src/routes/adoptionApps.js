@@ -11,8 +11,10 @@ function ensureAuth(req, res, next) {
 // Submit a new adoption application
 router.post("/", ensureAuth, async (req, res) => {
   try {
+    const { reptileId, ...rest } = req.body;
     const record = await AdoptionApp.create({
-      ...req.body,
+      ...rest,
+      reptile_id: reptileId,
       user_id: req.session.userId,
     });
     res.status(201).json(record);
@@ -56,10 +58,11 @@ router.put("/:id/status", async (req, res) => {
     if (!["approved", "pending", "rejected"].includes(status)) {
       return res.status(400).json({ error: "Invalid status" });
     }
-    await app.update({ status });
+    await app.update({ status, reptile_id: reptileId || app.reptile_id });
 
-    if (status === "approved" && reptileId) {
-      const reptile = await Reptile.findByPk(reptileId);
+    const targetId = reptileId || app.reptile_id;
+    if (status === "approved" && targetId) {
+      const reptile = await Reptile.findByPk(targetId);
       if (reptile) {
         await reptile.update({ status: "owned", owner_id: app.user_id });
       }

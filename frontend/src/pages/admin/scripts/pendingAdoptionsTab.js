@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateHeaderIndicators() {
-    headers.forEach(th => {
+    headers.forEach((th) => {
       th.classList.remove("sorted-asc", "sorted-desc");
       if (th.dataset.sort === currentSort.key) {
         th.classList.add(`sorted-${currentSort.direction}`);
@@ -31,12 +31,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  headers.forEach(th => {
+  headers.forEach((th) => {
     th.addEventListener("click", () => {
       const sortKey = th.dataset.sort;
       if (currentSort.key === sortKey) {
         // toggle direction
-        currentSort.direction = currentSort.direction === "asc" ? "desc" : "asc";
+        currentSort.direction =
+          currentSort.direction === "asc" ? "desc" : "asc";
       } else {
         currentSort.key = sortKey;
         currentSort.direction = "asc";
@@ -61,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderList() {
     tableBody.innerHTML = "";
-    apps.forEach(app => {
+    apps.forEach((app) => {
       const tr = document.createElement("tr");
       tr.dataset.id = app.id;
       tr.innerHTML = `
@@ -89,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
       denyBtn.addEventListener("click", () => updateStatus("rejected"));
   });
 
-  tableBody.addEventListener("click", e => {
+  tableBody.addEventListener("click", (e) => {
     if (e.target.classList.contains("view-app-btn")) {
       const tr = e.target.closest("tr");
       if (tr) openPopup(tr.dataset.id);
@@ -97,9 +98,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function openPopup(id) {
-    const app = apps.find(a => String(a.id) === String(id));
+    const app = apps.find((a) => String(a.id) === String(id));
     if (!app || !popup) return;
     popup.dataset.id = id;
+    if (app.reptile_id) popup.dataset.reptileId = app.reptile_id;
     let html = "<table class='detail-table'>";
     Object.entries(app).forEach(([k, v]) => {
       if (["id", "createdAt", "updatedAt"].includes(k)) return;
@@ -113,11 +115,12 @@ document.addEventListener("DOMContentLoaded", () => {
   async function updateStatus(status) {
     if (!popup) return;
     const id = popup.dataset.id;
+    const reptileId = popup.dataset.reptileId;
     try {
       const res = await fetch(`/api/adoption-apps/${id}/status`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status }),
+        body: JSON.stringify({ status, reptileId }),
       });
       if (res.ok) {
         popup.style.display = "none";

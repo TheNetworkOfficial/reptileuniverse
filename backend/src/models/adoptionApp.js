@@ -6,6 +6,7 @@ const AdoptionApp = sequelize.define(
   {
     user_id: { type: DataTypes.INTEGER, allowNull: false },
     reptileDescription: { type: DataTypes.STRING, allowNull: false },
+    reptile_id: { type: DataTypes.INTEGER },
     primaryName: { type: DataTypes.STRING, allowNull: false },
     primaryPhone: { type: DataTypes.STRING, allowNull: false },
     primaryEmail: { type: DataTypes.STRING, allowNull: false },
