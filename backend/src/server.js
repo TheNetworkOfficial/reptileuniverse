@@ -53,6 +53,7 @@ const reptileRoutes = require('./routes/reptiles');
 const adoptionRoutes = require('./routes/adoptions');
 const surrenderRoutes = require('./routes/surrenders');
 const healthInspectionRoutes = require('./routes/healthInspections');
+const adoptionAppRoutes = require('./routes/adoptionApps');
 
 // Rate-limit auth routes
 const authLimiter = rateLimit({
@@ -66,6 +67,7 @@ app.use('/api/reptiles', reptileRoutes);
 app.use('/api/adoptions', adoptionRoutes);
 app.use('/api/surrenders',  surrenderRoutes);
 app.use('/api/health-inspections', healthInspectionRoutes);
+app.use('/api/adoption-apps', adoptionAppRoutes);
 
 // ─── 7) Test PostgreSQL connection & sync ──────────────────────────────────────
 sequelize
@@ -80,6 +82,7 @@ require('./models/reptile');
 require('./models/adoption');
 require('./models/surrender');
 require('./models/healthInspection');
+require('./models/adoptionApp');
 
 sequelize
   .sync({ alter: true })

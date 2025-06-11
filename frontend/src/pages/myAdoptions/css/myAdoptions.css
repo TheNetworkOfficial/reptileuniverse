@@ -1,0 +1,31 @@
+#pending-adoptions {
+  margin: 120px 50px;
+}
+
+.adoption-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.status-tag {
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: #fff;
+  text-transform: capitalize;
+  font-size: 0.9rem;
+}
+
+.status-tag.approved {
+  background-color: #4caf50;
+}
+
+.status-tag.pending {
+  background-color: #ffeb3b;
+  color: #000;
+}
+
+.status-tag.rejected {
+  background-color: #f44336;
+}
