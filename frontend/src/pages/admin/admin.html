@@ -25,12 +25,28 @@
       <section class="admin-dashboard">
         <div class="tab-buttons">
           <button class="tab-button" data-target="clients">Clients</button>
-          <button class="tab-button" data-target="adoption-animals">Adoption Animals</button>
-          <button class="tab-button" data-target="pending-apps">Pending Adoptions</button>
+          <button class="tab-button" data-target="adoption-animals">
+            Adoption Animals
+          </button>
+          <button class="tab-button" data-target="pending-apps">
+            Pending Adoptions
+          </button>
           <button class="tab-button" data-target="stock">Stock</button>
         </div>
         <section id="clients" class="tab-content">
-          <p>Coming soon...</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Pending</th>
+                <th>Approved</th>
+                <th>Declined</th>
+                <th>Owned Animals</th>
+              </tr>
+            </thead>
+            <tbody id="clients-table-body"></tbody>
+          </table>
         </section>
         <section id="adoption-animals" class="tab-content">
           <div class="filters">

@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const AdoptionApp = require("../models/adoptionApp");
+const Reptile = require("../models/reptile");
 
 function ensureAuth(req, res, next) {
   if (req.session.userId) return next();
@@ -51,11 +52,19 @@ router.put("/:id/status", async (req, res) => {
   try {
     const app = await AdoptionApp.findByPk(req.params.id);
     if (!app) return res.status(404).json({ error: "Application not found" });
-    const { status } = req.body;
+    const { status, reptileId } = req.body;
     if (!["approved", "pending", "rejected"].includes(status)) {
       return res.status(400).json({ error: "Invalid status" });
     }
     await app.update({ status });
+
+    if (status === "approved" && reptileId) {
+      const reptile = await Reptile.findByPk(reptileId);
+      if (reptile) {
+        await reptile.update({ status: "owned", owner_id: app.user_id });
+      }
+    }
+
     res.json(app);
   } catch (err) {
     res.status(500).json({ error: err.message });

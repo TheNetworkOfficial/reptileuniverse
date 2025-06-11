@@ -16,16 +16,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const addBtn = document.getElementById("add-animal-btn");
 
   // These will be set once the popup HTML is inserted
-  let editingId = null;             // null → “Add New”; otherwise → the ID being edited
-  let popupTitleElem = null;        // <h2 id="animal-popup-title">Add New Animal</h2>
-  let animals = [];                 // current array of reptiles from GET /api/reptiles
+  let editingId = null; // null → “Add New”; otherwise → the ID being edited
+  let popupTitleElem = null; // <h2 id="animal-popup-title">Add New Animal</h2>
+  let animals = []; // current array of reptiles from GET /api/reptiles
 
   // ————————————————————————————
   // 2) Fetch + render “all animals”
   // ————————————————————————————
   async function loadAnimals() {
     try {
-      const res = await fetch("/api/reptiles");
+      const res = await fetch("/api/reptiles?status=adoptable");
       if (!res.ok) {
         throw new Error(`Server responded with ${res.status}`);
       }
@@ -86,8 +86,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const speciesFilter = speciesInput.value.toLowerCase();
 
     const filtered = animals.filter((a) => {
-      const nameMatch = !nameFilter || a.name.toLowerCase().includes(nameFilter);
-      const speciesMatch = !speciesFilter || a.species.toLowerCase().includes(speciesFilter);
+      const nameMatch =
+        !nameFilter || a.name.toLowerCase().includes(nameFilter);
+      const speciesMatch =
+        !speciesFilter || a.species.toLowerCase().includes(speciesFilter);
       return nameMatch && speciesMatch;
     });
 
@@ -142,13 +144,25 @@ document.addEventListener("DOMContentLoaded", () => {
         // ———————————————————————————————
         const formData = new FormData();
         formData.append("name", document.getElementById("animal-name").value);
-        formData.append("species", document.getElementById("animal-species").value);
+        formData.append(
+          "species",
+          document.getElementById("animal-species").value,
+        );
         formData.append("age", document.getElementById("animal-age").value);
-        formData.append("location", document.getElementById("animal-location").value);
+        formData.append(
+          "location",
+          document.getElementById("animal-location").value,
+        );
         formData.append("sex", document.getElementById("animal-sex").value);
-        formData.append("traits", document.getElementById("animal-traits").value);
+        formData.append(
+          "traits",
+          document.getElementById("animal-traits").value,
+        );
         formData.append("bio", document.getElementById("animal-bio").value);
-        formData.append("requirements", document.getElementById("animal-requirements").value);
+        formData.append(
+          "requirements",
+          document.getElementById("animal-requirements").value,
+        );
 
         // Append each selected file under “images” (backend expects req.files)
         for (const file of imagesInput.files) {
@@ -159,12 +173,16 @@ document.addEventListener("DOMContentLoaded", () => {
         // 5c) Determine POST vs PUT & send
         // ———————————————————————————————
         try {
-          const url = editingId ? `/api/reptiles/${editingId}` : "/api/reptiles";
+          const url = editingId
+            ? `/api/reptiles/${editingId}`
+            : "/api/reptiles";
           const method = editingId ? "PUT" : "POST";
           // ─── Collect any “delete-image” checkboxes that are checked ────────────
           const existingHolder = document.getElementById("existing-images");
           if (existingHolder) {
-            const checkedBoxes = existingHolder.querySelectorAll('input[name="delete-image"]:checked');
+            const checkedBoxes = existingHolder.querySelectorAll(
+              'input[name="delete-image"]:checked',
+            );
             const deleteArr = Array.from(checkedBoxes).map((cb) => cb.value);
             if (deleteArr.length) {
               formData.append("deleteImages", JSON.stringify(deleteArr));
@@ -178,7 +196,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
           if (!res.ok) {
             const errJson = await res.json().catch(() => ({}));
-            throw new Error(errJson.error || `Server responded with ${res.status}`);
+            throw new Error(
+              errJson.error || `Server responded with ${res.status}`,
+            );
           }
 
           // Success: reset & close popup
@@ -222,9 +242,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const form = document.getElementById("add-animal-form");
       if (form) form.reset();
 
-     // Clear any thumbnails from a prior “edit”
-     const existingHolder = document.getElementById("existing-images");
-     if (existingHolder) existingHolder.innerHTML = "";
+      // Clear any thumbnails from a prior “edit”
+      const existingHolder = document.getElementById("existing-images");
+      if (existingHolder) existingHolder.innerHTML = "";
       // Show popup is handled by popupInitilzation.js
     });
   }
@@ -248,7 +268,8 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("animal-sex").value = reptile.sex || "";
       document.getElementById("animal-traits").value = reptile.traits || "";
       document.getElementById("animal-bio").value = reptile.bio || "";
-      document.getElementById("animal-requirements").value = reptile.requirements || "";
+      document.getElementById("animal-requirements").value =
+        reptile.requirements || "";
       // Note: Cannot prefill <input type="file"> for security reasons.
       // If you want to show existing URLs, you can display them elsewhere, but we clear the file input:
       document.getElementById("animal-images").value = "";
@@ -298,10 +319,10 @@ document.addEventListener("DOMContentLoaded", () => {
   let inspectionPopup, inspectionList, createInspectionBtn;
 
   document.addEventListener("popupsLoaded", () => {
-    inspectionPopup     = document.getElementById("inspection-popup-container");
-    inspectionList      = document.getElementById("inspection-popup-list");
+    inspectionPopup = document.getElementById("inspection-popup-container");
+    inspectionList = document.getElementById("inspection-popup-list");
     createInspectionBtn = document.getElementById("create-inspection-btn");
-    const closeBtn      = inspectionPopup?.querySelector(".close-button");
+    const closeBtn = inspectionPopup?.querySelector(".close-button");
 
     // Close popup
     if (closeBtn) {
@@ -311,15 +332,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Grab form + cancel
-    const inspectionForm      = document.getElementById("inspection-form");
-    const cancelInspectionBtn = document.getElementById("cancel-inspection-btn");
+    const inspectionForm = document.getElementById("inspection-form");
+    const cancelInspectionBtn = document.getElementById(
+      "cancel-inspection-btn",
+    );
 
     // “Create New” → show form
     if (createInspectionBtn && inspectionForm) {
       createInspectionBtn.addEventListener("click", () => {
-        inspectionList.style.display      = "none";
+        inspectionList.style.display = "none";
         createInspectionBtn.style.display = "none";
-        inspectionForm.style.display      = "block";
+        inspectionForm.style.display = "block";
       });
     }
 
@@ -327,8 +350,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (cancelInspectionBtn && inspectionForm) {
       cancelInspectionBtn.addEventListener("click", () => {
         inspectionForm.reset();
-        inspectionForm.style.display      = "none";
-        inspectionList.style.display      = "block";
+        inspectionForm.style.display = "none";
+        inspectionList.style.display = "block";
         createInspectionBtn.style.display = "inline-block";
       });
     }
@@ -343,13 +366,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const payload = { reptile_id: rid };
         for (const [k, v] of fd.entries()) payload[k] = v;
         await fetch("/api/health-inspections", {
-          method:  "POST",
+          method: "POST",
           headers: { "Content-Type": "application/json" },
-          body:    JSON.stringify(payload),
+          body: JSON.stringify(payload),
         });
         inspectionForm.reset();
-        inspectionForm.style.display      = "none";
-        inspectionList.style.display      = "block";
+        inspectionForm.style.display = "none";
+        inspectionList.style.display = "block";
         createInspectionBtn.style.display = "inline-block";
         loadInspectionList(rid);
         loadAnimals();
@@ -359,22 +382,22 @@ document.addEventListener("DOMContentLoaded", () => {
     // — Delegate View/Delete/Download clicks INSIDE popupsLoaded —
     if (inspectionList) {
       inspectionList.addEventListener("click", async (e) => {
-        const tr  = e.target.closest("tr");
+        const tr = e.target.closest("tr");
         if (!tr) return;
         const iid = tr.dataset.id;
         if (e.target.matches(".delete-inspection")) {
           if (!confirm("Delete this report?")) return;
           await fetch(`/api/health-inspections/${iid}`, { method: "DELETE" });
           loadInspectionList(inspectionPopup.dataset.reptileId);
-        }
-        else if (e.target.matches(".download-inspection")) {
+        } else if (e.target.matches(".download-inspection")) {
           window.open(`/api/health-inspections/${iid}/pdf`, "_blank");
-        }
-        else if (e.target.matches(".view-inspection")) {
-          const all = await (await fetch(
-            `/api/health-inspections/${inspectionPopup.dataset.reptileId}`
-          )).json();
-          const ins = all.find(x => x.id == iid);
+        } else if (e.target.matches(".view-inspection")) {
+          const all = await (
+            await fetch(
+              `/api/health-inspections/${inspectionPopup.dataset.reptileId}`,
+            )
+          ).json();
+          const ins = all.find((x) => x.id == iid);
           if (ins) alert(JSON.stringify(ins, null, 2));
         }
       });
@@ -388,7 +411,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!inspectionList) return;
     inspectionList.innerHTML = "Loading…";
     try {
-      const res  = await fetch(`/api/health-inspections/${reptileId}`);
+      const res = await fetch(`/api/health-inspections/${reptileId}`);
       const list = res.ok ? await res.json() : [];
       if (!list.length) {
         inspectionList.textContent = "No inspections.";
@@ -396,10 +419,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       let html = `<table class="ins-table">
         <thead><tr><th>Date</th><th>Notes</th><th>Actions</th></tr></thead><tbody>`;
-      list.forEach(ins => {
+      list.forEach((ins) => {
         html += `<tr data-id="${ins.id}">
           <td>${new Date(ins.date).toLocaleDateString()}</td>
-          <td>${ins.notes.slice(0,30)}…</td>
+          <td>${ins.notes.slice(0, 30)}…</td>
           <td>
             <button class="view-inspection btn-option">View</button>
             <button class="delete-inspection btn-danger">Delete</button>
@@ -419,7 +442,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!inspectionPopup) return;
     inspectionPopup.dataset.reptileId = id;
     loadInspectionList(id);
-    inspectionPopup.style.display    = "flex";
+    inspectionPopup.style.display = "flex";
   }
 
   // ———————————————————————————————

@@ -21,12 +21,21 @@ Reptile.init(
       allowNull: true,
       defaultValue: [], // Sequelize will create DEFAULT '[]'::json
     },
+
+    status: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "adoptable",
+      validate: { isIn: [["adoptable", "owned", "for sale", "deceased"]] },
+    },
+
+    owner_id: { type: DataTypes.INTEGER },
   },
   {
     sequelize,
-    modelName: 'Reptile',
-    tableName: 'reptiles',
-  }
+    modelName: "Reptile",
+    tableName: "reptiles",
+  },
 );
 
 module.exports = Reptile;

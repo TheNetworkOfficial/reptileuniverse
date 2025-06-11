@@ -3,6 +3,7 @@
 This guide explains how to configure the backend for a reptile adoption website based on the current project template. It covers the required database structures and outlines how PostgreSQL, MongoDB, and Redis work together.
 
 ## Overview
+
 - **PostgreSQL**: Stores persistent relational data such as user accounts and reptile records.
 - **MongoDB**: Stores flexible documents like reptile care sheets, scanned adoption contracts, and any rich text that doesn't fit well in a relational table.
 - **Redis**: Handles sessions and caching for fast lookups (e.g., storing recent reptile listings).
@@ -12,13 +13,17 @@ All examples in this document use a new database name `reptile_universe` so the 
 ## 1. PostgreSQL
 
 ### 1.1 Database Creation
+
 Create a new PostgreSQL database and user:
+
 ```sql
 CREATE DATABASE reptile_universe_dev;
 CREATE USER reptile_user WITH ENCRYPTED PASSWORD 'yourPassword';
 GRANT ALL PRIVILEGES ON DATABASE reptile_universe_dev TO reptile_user;
 ```
+
 Update your `.env` file so the backend connects to this database:
+
 ```env
 DB_NAME_DEV=reptile_universe_dev
 DB_USERNAME=reptile_user
@@ -28,7 +33,9 @@ DB_DIALECT=postgres
 ```
 
 ### 1.2 Tables
+
 Based on `frontend/src/pages/details/details.html`, the main reptile fields include:
+
 - `name`
 - `species`
 - `age`
@@ -39,6 +46,7 @@ Based on `frontend/src/pages/details/details.html`, the main reptile fields incl
 - `requirements`
 
 Create the following tables:
+
 ```sql
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
@@ -59,6 +67,8 @@ CREATE TABLE reptiles (
   traits VARCHAR(100),
   bio TEXT,
   requirements TEXT,
+  status VARCHAR(20) DEFAULT 'adoptable',
+  owner_id INT REFERENCES users(id),
   image_urls TEXT[],
   createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -73,13 +83,17 @@ CREATE TABLE adoptions (
   UNIQUE(user_id, reptile_id)
 );
 ```
+
 The `paperwork_id` field links to MongoDB documents (see below).
 
 ## 2. MongoDB
+
 MongoDB stores adoption documents such as signed PDF files or digital care sheets.
+
 1. Create a new database named `reptile_universe_docs`.
 2. Within this database create a `paperwork` collection to hold each adoption's paperwork.
-Example document structure:
+   Example document structure:
+
 ```json
 {
   "_id": ObjectId(),
@@ -94,31 +108,39 @@ Example document structure:
   "signedOn": ISODate()
 }
 ```
+
 Store the MongoDB document's ObjectId in the PostgreSQL `adoptions.paperwork_id` column to link the two systems.
 
 ## 3. Redis
+
 Use Redis for caching and session storage.
+
 - Set `REDIS_URL=redis://localhost:6379` in your `.env` file.
 - Configure session middleware in `backend/src/server.js` (already present) to use Redis if desired. Example using `connect-redis`:
+
 ```javascript
-const RedisStore = require('connect-redis').default;
-const redisClient = require('../config/redis');
-app.use(session({
-  store: new RedisStore({ client: redisClient }),
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false
-}));
+const RedisStore = require("connect-redis").default;
+const redisClient = require("../config/redis");
+app.use(
+  session({
+    store: new RedisStore({ client: redisClient }),
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  }),
+);
 ```
 
 ## 4. Updating the Backend Models
+
 Create Sequelize models for the new tables. Example for `reptiles`:
+
 ```javascript
 // backend/src/models/reptile.js
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/database");
 
-const Reptile = sequelize.define('Reptile', {
+const Reptile = sequelize.define("Reptile", {
   name: DataTypes.STRING,
   species: DataTypes.STRING,
   age: DataTypes.STRING,
@@ -126,13 +148,15 @@ const Reptile = sequelize.define('Reptile', {
   sex: DataTypes.STRING,
   traits: DataTypes.STRING,
   bio: DataTypes.TEXT,
-  requirements: DataTypes.TEXT,  
-  image_urls: DataTypes.ARRAY(DataTypes.TEXT)
+  requirements: DataTypes.TEXT,
+  image_urls: DataTypes.ARRAY(DataTypes.TEXT),
 });
 
 module.exports = Reptile;
 ```
+
 Repeat for `User` and `Adoption`. Ensure associations:
+
 ```javascript
 User.hasMany(Adoption);
 Reptile.hasMany(Adoption);
@@ -143,6 +167,7 @@ Adoption.belongsTo(Reptile);
 Run migrations or `sequelize.sync()` during development to create the tables.
 
 ## 5. Example Workflow
+
 1. User registers (entry in `users` table).
 2. Admin creates a reptile listing (entry in `reptiles` table) with data like name, species, age, and bio.
 3. When a user adopts a reptile, save the signed paperwork in MongoDB and create an entry in `adoptions` linking the user to the reptile.

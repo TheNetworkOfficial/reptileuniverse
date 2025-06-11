@@ -55,3 +55,31 @@
 #pending-apps table th.sorted-desc::after {
   content: " ▼";
 }
+
+/* Clients table */
+#clients table {
+  width: 100%;
+  border-collapse: collapse;
+}
+#clients th,
+#clients td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+#clients tr.client-row {
+  cursor: pointer;
+}
+#clients tr.client-detail {
+  background: #2a2a2a;
+}
+#clients tr.client-detail table {
+  width: 100%;
+  margin-top: 5px;
+  border-collapse: collapse;
+}
+#clients tr.client-detail th,
+#clients tr.client-detail td {
+  border: 1px solid #ddd;
+  padding: 4px;
+}
