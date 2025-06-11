@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const row = document.createElement("tr");
       row.dataset.id = a.id;
       row.innerHTML = `
+        <td>${a.id}</td>
         <td>${a.name}</td>
         <td>${a.species}</td>
         <td>${a.sex || ""}</td>

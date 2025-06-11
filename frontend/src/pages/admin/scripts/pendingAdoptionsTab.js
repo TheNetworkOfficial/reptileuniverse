@@ -66,6 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const tr = document.createElement("tr");
       tr.dataset.id = app.id;
       tr.innerHTML = `
+        <td>${app.reptile_id || ""}</td>
         <td>${app.reptileDescription || ""}</td>
         <td>${app.primaryName || ""}</td>
         <td>${app.primaryEmail || ""}</td>
