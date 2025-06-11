@@ -37,51 +37,49 @@ document.addEventListener('DOMContentLoaded', () => {
     if (submitBtn) submitBtn.disabled = !allValid;
     }
 
-  // toggle landlord section
-  document.querySelectorAll('input[name="rentOrOwn"]').forEach(r => {
-    r.addEventListener('change', () => {
-      const L = document.querySelector('.landlord-info');
-      const reqs = L.querySelectorAll('input');
-      if (r.value === 'rent') {
-        L.style.display = 'block';
-        reqs.forEach(i => i.setAttribute('required', ''));
+  // 1) Landlord section (only when renting)
+  document.querySelectorAll('input[name="rentOrOwn"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const section = document.querySelector('.landlord-info');
+      const inputs  = section.querySelectorAll('input');
+      if (radio.value === 'rent') {
+        section.style.display = 'block';
+        inputs.forEach(i => { i.disabled = false; i.required = true; });
       } else {
-        L.style.display = 'none';
-        reqs.forEach(i => i.removeAttribute('required'));
+        section.style.display = 'none';
+        inputs.forEach(i => { i.disabled = true;  i.required = false; });
       }
-      updateNavButtons();
     });
   });
 
-  // toggle other residents
-  document.querySelectorAll('input[name="othersResiding"]').forEach(r => {
-    r.addEventListener('change', () => {
-      const R = document.querySelector('.residing-details');
-      const inp = R.querySelector('input');
-      if (r.value === 'yes') {
-        R.style.display = 'block';
-        inp.setAttribute('required', '');
+  // 2) “Other residents” section
+  document.querySelectorAll('input[name="othersResiding"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const section = document.querySelector('.residing-details');
+      const inputs  = section.querySelectorAll('input');
+      if (radio.value === 'yes') {
+        section.style.display = 'block';
+        inputs.forEach(i => { i.disabled = false; i.required = true; });
       } else {
-        R.style.display = 'none';
-        inp.removeAttribute('required');
+        section.style.display = 'none';
+        inputs.forEach(i => { i.disabled = true;  i.required = false; });
       }
-      updateNavButtons();
     });
   });
 
-  // toggle children section
-  document.querySelectorAll('input[name="childrenLiving"]').forEach(r => {
-    r.addEventListener('change', () => {
-      const C = document.querySelector('.children-info');
-      const elems = C.querySelectorAll('input');
-      if (r.value === 'fullTime' || r.value === 'partTime') {
-        C.style.display = 'block';
-        elems.forEach(i => i.setAttribute('required', ''));
+  // 3) Children section
+  document.querySelectorAll('input[name="childrenLiving"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const section = document.querySelector('.children-info');
+      const inputs  = section.querySelectorAll('input');
+      // show for both fullTime or partTime
+      if (radio.value === 'fullTime' || radio.value === 'partTime') {
+        section.style.display = 'block';
+        inputs.forEach(i => { i.disabled = false; i.required = true; });
       } else {
-        C.style.display = 'none';
-        elems.forEach(i => i.removeAttribute('required'));
+        section.style.display = 'none';
+        inputs.forEach(i => { i.disabled = true;  i.required = false; });
       }
-      updateNavButtons();
     });
   });
 
