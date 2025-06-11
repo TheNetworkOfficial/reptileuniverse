@@ -21,10 +21,24 @@ document.addEventListener("DOMContentLoaded", () => {
       apps.forEach((app) => {
         const item = document.createElement("div");
         item.className = "adoption-item";
-        const status = app.status || "pending";
+
+        // normalize status
+        const raw = app.status || "pending";
+        let label = raw;
+        let cls   = raw;
+        let btn   = "";
+
+        // for pendingPayment, show "awaiting deposit" + button
+        if (raw === "pendingPayment") {
+          label = "awaiting deposit";
+          cls   = "pendingPayment";
+          btn   = `<button class="add-deposit-button">Add Deposit</button>`;
+        }
+
         item.innerHTML = `
           <span class="reptile-name">${app.reptileDescription}</span>
-          <span class="status-tag ${status}">${status}</span>
+          <span class="status-tag ${cls}">${label}</span>
+          ${btn}
         `;
         list.appendChild(item);
       });

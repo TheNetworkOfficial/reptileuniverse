@@ -31,6 +31,9 @@
           <button class="tab-button" data-target="pending-apps">
             Pending Adoptions
           </button>
+          <button class="tab-button" data-target="pending-payment">
+            Pending Payment
+          </button>
           <button class="tab-button" data-target="stock">Stock</button>
         </div>
         <section id="clients" class="tab-content">
@@ -92,6 +95,18 @@
               </tr>
             </thead>
             <tbody id="pending-apps-body"></tbody>
+          </table>
+        </section>
+        <section id="pending-payment" class="tab-content">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Applicant</th>
+              </tr>
+            </thead>
+            <tbody id="pending-payment-body"></tbody>
           </table>
         </section>
         <section id="stock" class="tab-content">

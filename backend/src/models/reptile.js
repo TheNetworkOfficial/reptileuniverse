@@ -26,7 +26,9 @@ Reptile.init(
       type: DataTypes.STRING,
       allowNull: false,
       defaultValue: "adoptable",
-      validate: { isIn: [["adoptable", "owned", "for sale", "deceased"]] },
+      validate: {
+        isIn: [["adoptable", "pendingPayment", "owned", "for sale", "deceased"]],
+      },
     },
 
     owner_id: { type: DataTypes.INTEGER },

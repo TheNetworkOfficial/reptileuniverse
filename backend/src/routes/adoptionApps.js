@@ -2,6 +2,13 @@ const express = require("express");
 const router = express.Router();
 const AdoptionApp = require("../models/adoptionApp");
 const Reptile = require("../models/reptile");
+const User = require("../models/user");
+
+function broadcastPaymentPending(reptile, user) {
+  console.log(
+    `Payment pending for reptile ${reptile.id} and user ${user.id}`,
+  );
+}
 
 function ensureAuth(req, res, next) {
   if (req.session.userId) return next();
@@ -49,6 +56,25 @@ router.get("/pending", async (req, res) => {
   }
 });
 
+router.get("/pending-payment", async (req, res) => {
+  try {
+    const reptiles = await Reptile.findAll({ where: { status: "pendingPayment" } });
+    const results = [];
+    for (const reptile of reptiles) {
+      const app = await AdoptionApp.findOne({
+        where: { reptile_id: reptile.id, status: "approved" },
+        order: [["createdAt", "DESC"]],
+      });
+      let user = null;
+      if (app) user = await User.findByPk(app.user_id);
+      results.push({ reptile, user });
+    }
+    res.json(results);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Update application status
 router.put("/:id/status", async (req, res) => {
   try {
@@ -64,7 +90,9 @@ router.put("/:id/status", async (req, res) => {
     if (status === "approved" && targetId) {
       const reptile = await Reptile.findByPk(targetId);
       if (reptile) {
-        await reptile.update({ status: "owned", owner_id: app.user_id });
+        await reptile.update({ status: "pendingPayment" });
+        const user = await User.findByPk(app.user_id);
+        if (user) broadcastPaymentPending(reptile, user);
       }
     }
 

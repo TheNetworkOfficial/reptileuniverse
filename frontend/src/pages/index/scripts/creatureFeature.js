@@ -8,8 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
       return res.json();
     })
     .then(allReptiles => {
-      // Take only the first 9
-      const featured = allReptiles.slice(0, 9);
+      // 1) Keep only “adoptable” or “for sale”
+      const available = allReptiles.filter(
+        animal => animal.status === 'adoptable' || animal.status === 'for sale'
+      );
+
+      // 2) Then take the first 9 of those
+      const featured = available.slice(0, 9);
 
       featured.forEach(animal => {
         const tile = document.createElement('a');

@@ -36,14 +36,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Initial fetch of all reptiles
+  // Initial fetch of all reptiles, then keep only adoptable/for sale
   fetch('/api/reptiles')
     .then(res => {
       if (!res.ok) throw new Error(`Fetch error: ${res.status}`);
       return res.json();
     })
     .then(data => {
-      allAnimals = data;
+      allAnimals = data.filter(a =>
+        a.status === 'adoptable' || a.status === 'for sale'
+      );
       renderAnimals(allAnimals);
     })
     .catch(err => {
@@ -53,16 +55,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Wire up search + filter button
   searchButton.addEventListener('click', () => {
-    const nameQuery = searchInput.value.trim().toLowerCase();
+    const nameQuery    = searchInput.value.trim().toLowerCase();
     const speciesQuery = filterSelect.value.trim().toLowerCase();
 
     const filtered = allAnimals.filter(a => {
-      const matchesName = a.name.toLowerCase().includes(nameQuery);
-      const matchesSpecies =
-        speciesQuery === '' ||
-        a.species.toLowerCase() === speciesQuery;
-      return matchesName && matchesSpecies;
+      const matchesName    = a.name.toLowerCase().includes(nameQuery);
+      const matchesSpecies = !speciesQuery ||
+                              a.species.toLowerCase() === speciesQuery;
+      const matchesStatus  = a.status === 'adoptable' ||
+                              a.status === 'for sale';
+
+      return matchesName && matchesSpecies && matchesStatus;
     });
+
     renderAnimals(filtered);
   });
 });
