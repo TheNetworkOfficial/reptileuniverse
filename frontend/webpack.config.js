@@ -157,6 +157,10 @@ module.exports = {
       template: './src/pages/popups/admin-health-inspections-popup.html',
       filename: 'admin-health-inspections-popup.html'
     }),
+    new HtmlWebpackPlugin({
+      template: './src/pages/popups/admin-adoption-app-popup.html',
+      filename: 'admin-adoption-app-popup.html'
+    }),
   ],
   devServer: {
     proxy: [

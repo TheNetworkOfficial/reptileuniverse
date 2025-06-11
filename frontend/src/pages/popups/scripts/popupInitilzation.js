@@ -5,42 +5,35 @@ document.addEventListener("DOMContentLoaded", () => {
   let popupsToLoad = [
     "admin-add-skill-popup.html",
     "admin-add-animal-popup.html",
-    "admin-health-inspections-popup.html"
+    "admin-health-inspections-popup.html",
+    "admin-adoption-app-popup.html"
   ];
   let loadedPopupsCount = 0;
 
   // Function to set up popup events for a specific popup container
   function setupPopup(popupId, triggerSelector, closeButtonSelector) {
     const popup = document.getElementById(popupId);
-    if (!popup) {
-      console.log(`Popup with ID ${popupId} not found.`);
-      return;
-    }
+    if (!popup) return;
 
-    const triggers = document.querySelectorAll(triggerSelector);
+    // 1) Always wire up the close-button
     const closeButton = popup.querySelector(closeButtonSelector);
-
-    if (triggers.length > 0 && closeButton) {
-      console.log(`Setting up popup and triggers for ${popupId}.`);
-      triggers.forEach((trigger) => {
-        trigger.addEventListener("click", (e) => {
-          e.preventDefault();
-          console.log(`Displaying popup: ${popupId}`);
-          popup.style.display = "flex";
-        });
-      });
-
+    if (closeButton) {
       closeButton.addEventListener("click", () => {
-        console.log(`Hiding popup: ${popupId}`);
         popup.style.display = "none";
       });
-    } else {
-      if (triggers.length === 0)
-        console.log(`No triggers found for selector ${triggerSelector}.`);
-      if (!closeButton)
-        console.log(
-          `Close button with selector ${closeButtonSelector} not found in popup ${popupId}.`
-        );
+    }
+
+    // 2) Then wire up whatever triggers you have
+    const triggers = document.querySelectorAll(triggerSelector);
+    triggers.forEach(trigger => {
+      trigger.addEventListener("click", e => {
+        e.preventDefault();
+        popup.style.display = "flex";
+      });
+    });
+
+    if (triggers.length === 0) {
+      console.warn(`No triggers found for selector ${triggerSelector}.`);
     }
   }
 
@@ -59,6 +52,10 @@ document.addEventListener("DOMContentLoaded", () => {
       {
         popupId: "inspection-popup-container", // ID from admin-inspection-popup.html
         triggerSelector: ".inspection-cell" // Button in admin.html
+      },
+      {
+        popupId: "adoption-app-popup-container", // ID from admin-adoption-app-popup.html
+        triggerSelector: ".view-app-btn" // Button in pendingAdoptionsTab.js
       }
     ];
 

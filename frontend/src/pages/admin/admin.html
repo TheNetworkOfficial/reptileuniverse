@@ -26,6 +26,7 @@
         <div class="tab-buttons">
           <button class="tab-button" data-target="clients">Clients</button>
           <button class="tab-button" data-target="adoption-animals">Adoption Animals</button>
+          <button class="tab-button" data-target="pending-apps">Pending Adoptions</button>
           <button class="tab-button" data-target="stock">Stock</button>
         </div>
         <section id="clients" class="tab-content">
@@ -60,6 +61,19 @@
               </tr>
             </thead>
             <tbody id="animal-table-body"></tbody>
+          </table>
+        </section>
+        <section id="pending-apps" class="tab-content">
+          <table>
+            <thead>
+              <tr>
+                <th>Reptile</th>
+                <th>Applicant</th>
+                <th>Email</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody id="pending-apps-body"></tbody>
           </table>
         </section>
         <section id="stock" class="tab-content">

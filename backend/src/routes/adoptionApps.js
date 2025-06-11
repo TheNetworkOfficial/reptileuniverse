@@ -33,4 +33,33 @@ router.get("/my", ensureAuth, async (req, res) => {
   }
 });
 
+// List all pending applications
+router.get("/pending", async (req, res) => {
+  try {
+    const apps = await AdoptionApp.findAll({
+      where: { status: "pending" },
+      order: [["createdAt", "DESC"]],
+    });
+    res.json(apps);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Update application status
+router.put("/:id/status", async (req, res) => {
+  try {
+    const app = await AdoptionApp.findByPk(req.params.id);
+    if (!app) return res.status(404).json({ error: "Application not found" });
+    const { status } = req.body;
+    if (!["approved", "pending", "rejected"].includes(status)) {
+      return res.status(400).json({ error: "Invalid status" });
+    }
+    await app.update({ status });
+    res.json(app);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;
