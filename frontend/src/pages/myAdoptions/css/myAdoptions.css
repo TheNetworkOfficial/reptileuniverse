@@ -1,35 +1,98 @@
+/* myAdoptions.css */
+
+/* Container: 60% of viewport width, centered */
 #pending-adoptions {
-  margin: 120px 50px;
+  margin: 120px auto;
+  width: 60vw;
+  padding: 0 20px;
 }
 
+/* List layout */
+.adoption-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Item layout: flex row, no more space-between */
 .adoption-item {
   display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid #ccc;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: var(--container-background);
+  border: 1px solid #2a2a2a;
+  border-radius: var(--border-radius);
 }
 
-.status-tag {
-  padding: 4px 8px;
-  border-radius: 4px;
-  color: #fff;
-  text-transform: capitalize;
+/* Name pushes button+tag to the right */
+.reptile-name {
+  font-weight: 600;
+  flex: 1;
+  order: 0;
+}
+
+/* Button now comes before the tag, with thinner padding */
+.btn, button.btn {
+  margin-right: 10px;
+  padding: 6px 12px;
   font-size: 0.9rem;
 }
 
+/* Status tag stays last */
+.status-tag {
+  order: 2;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-transform: capitalize;
+  font-size: 0.9rem;
+  color: #fff;
+}
+
+/* Tag colors */
 .status-tag.approved {
   background-color: #4caf50;
 }
-
 .status-tag.pending {
   background-color: #ffeb3b;
   color: #000;
 }
-
 .status-tag.rejected {
   background-color: #f44336;
 }
 
-.deposit-btn {
-  margin-left: 10px;
+/* Mobile (phones): full-width & stacked items */
+@media (max-width: 600px) {
+  #pending-adoptions {
+    width: 95vw;
+    padding: 0 10px;
+  }
+
+  .adoption-item {
+    display: grid;
+    grid-template-columns: 40% 1fr 40%;
+    grid-template-rows: auto auto;
+    /* row 1: name spans all cols; row 2: tag in col 1, btn in col 3 */
+    grid-template-areas:
+      "name name name"
+      "tag   .    btn";
+    gap: 8px 12px;
+    padding: 12px 10px;
+  }
+
+  .reptile-name {
+    grid-area: name;
+    margin: 0;
+  }
+
+  .status-tag {
+    grid-area: tag;
+    width: 100%;
+    text-align: center;
+  }
+
+  .deposit-btn {
+    grid-area: btn;
+    width: 100%;
+    text-align: center;
+  }
 }
