@@ -20,6 +20,7 @@ module.exports = {
     surrenderForm: "./src/pages/surrenderForm/surrenderForm.js",
     confirmation: "./src/pages/confirmation/confirmation.js",
     myAdoptions: "./src/pages/myAdoptions/myAdoptions.js",
+    profile: "./src/pages/profile/profile.js",
   },
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -78,7 +79,7 @@ module.exports = {
       filename: "admin.html",
       chunks: ["main", "admin"],
       favicon: "./src/assets/images/icons/reptileUniverseLogo1.png",
-    }),    
+    }),
     new HtmlWebpackPlugin({
       template: "./src/pages/forgotPassword/forgotPassword.html",
       filename: "forgotPassword.html",
@@ -146,6 +147,12 @@ module.exports = {
       favicon: "./src/assets/images/icons/reptileUniverseLogo1.png",
     }),
     new HtmlWebpackPlugin({
+      template: "./src/pages/profile/profile.html",
+      filename: "profile.html",
+      chunks: ["main", "profile"],
+      favicon: "./src/assets/images/icons/reptileUniverseLogo1.png",
+    }),
+    new HtmlWebpackPlugin({
       template: './src/pages/popups/admin-add-skill-popup.html',
       filename: 'admin-add-skill-popup.html'
     }),
@@ -165,18 +172,18 @@ module.exports = {
   devServer: {
     proxy: [
       {
-        context: ['/api', '/graphql', '/uploads'],   // URLs to forward
-        target: 'http://localhost:3000',  // your backend
-        changeOrigin: true,               // host header rewrite
-        secure: false,                    // if you're using self-signed certs
+        context: ["/api", "/graphql", "/uploads"], // URLs to forward
+        target: "http://localhost:3000", // your backend
+        changeOrigin: true, // host header rewrite
+        secure: false, // if you're using self-signed certs
       },
     ],
     static: {
-      directory: path.join(__dirname, 'dist'),
+      directory: path.join(__dirname, "dist"),
     },
     compress: true,
     port: 9000,
-    allowedHosts: "all",  // ⬅️ this lets any hostname (including ngrok) through
+    allowedHosts: "all", // ⬅️ this lets any hostname (including ngrok) through
   },
 };
 

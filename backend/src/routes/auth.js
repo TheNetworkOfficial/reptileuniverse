@@ -1,7 +1,7 @@
 const express = require("express");
-const bcrypt  = require("bcrypt");
-const router  = express.Router();
-const User    = require("../models/user");
+const bcrypt = require("bcrypt");
+const router = express.Router();
+const User = require("../models/user");
 
 // Middleware to protect routes
 function ensureAuth(req, res, next) {
@@ -13,12 +13,50 @@ function ensureAuth(req, res, next) {
 router.get("/profile", ensureAuth, async (req, res) => {
   try {
     const user = await User.findByPk(req.session.userId, {
-      attributes: ["id", "username", "email"],  // only real columns
+      attributes: { exclude: ["password_hash"] },
     });
     if (!user) return res.status(404).json({ error: "User not found" });
     res.json(user);
   } catch (err) {
     console.error("Profile error:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+router.put("/profile", ensureAuth, async (req, res) => {
+  try {
+    const user = await User.findByPk(req.session.userId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+    const fields = [
+      "username",
+      "email",
+      "primaryName",
+      "primaryPhone",
+      "primaryEmail",
+      "primaryEmployment",
+      "primaryWorkPhone",
+      "primaryOccupation",
+      "previousExperience",
+      "address",
+      "city",
+      "stateZip",
+      "rentOrOwn",
+      "landlordName",
+      "landlordPhone",
+      "othersResiding",
+      "residingDetails",
+      "childrenLiving",
+    ];
+    const updates = {};
+    fields.forEach((f) => {
+      if (req.body[f] !== undefined) updates[f] = req.body[f];
+    });
+    await user.update(updates);
+    const plain = user.get({ plain: true });
+    delete plain.password_hash;
+    res.json(plain);
+  } catch (err) {
+    console.error("Profile update error:", err);
     res.status(500).json({ error: "Server error" });
   }
 });
@@ -58,7 +96,7 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials" });
     }
     // Success → set session
-    req.session.userId   = user.id;
+    req.session.userId = user.id;
     req.session.username = user.username;
     res.json({ message: "Logged in successfully" });
   } catch (err) {
