@@ -29,3 +29,7 @@
 .status-tag.rejected {
   background-color: #f44336;
 }
+
+.deposit-btn {
+  margin-left: 10px;
+}

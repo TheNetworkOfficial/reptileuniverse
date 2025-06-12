@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
       detailTr.style.display = "none";
       const td = document.createElement("td");
       td.colSpan = 6;
-      td.innerHTML = buildAnimalTable(c.animals);
+      td.innerHTML = buildClientDetails(c);
       detailTr.appendChild(td);
       tableBody.appendChild(detailTr);
 
@@ -42,6 +42,36 @@ document.addEventListener("DOMContentLoaded", () => {
           detailTr.style.display === "none" ? "table-row" : "none";
       });
     });
+  }
+
+  function buildClientDetails(client) {
+    let html = "<table class='info-table'><tbody>";
+    const info = [
+      ["Name", client.primaryName],
+      ["Phone Number", client.primaryPhone],
+      ["Email Address", client.primaryEmail],
+      ["Address", client.address],
+      ["City", client.city],
+      ["State/Zip", client.stateZip],
+      ["Rent or Own", client.rentOrOwn],
+      ["Landlord Name", client.landlordName],
+      ["Landlord Phone", client.landlordPhone],
+      ["Others Residing", client.othersResiding],
+      ["Residing Details", client.residingDetails],
+      ["Children In The Home", client.childrenLiving],
+      ["Employment", client.primaryEmployment],
+      ["Work Phone", client.primaryWorkPhone],
+      ["Occupation", client.primaryOccupation],
+      ["Previous Experience", client.previousExperience],
+    ];
+    info.forEach(([label, val]) => {
+      if (val) {
+        html += `<tr><th>${label}</th><td>${val}</td></tr>`;
+      }
+    });
+    html += "</tbody></table>";
+    html += buildAnimalTable(client.animals);
+    return html;
   }
 
   function buildAnimalTable(list) {

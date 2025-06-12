@@ -95,3 +95,9 @@
   border: 1px solid #ddd;
   padding: 4px;
 }
+
+#clients table.info-table {
+  margin-bottom: 10px;
+  width: 100%;
+  border-collapse: collapse;
+}
