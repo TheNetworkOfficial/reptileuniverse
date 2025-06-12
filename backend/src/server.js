@@ -5,7 +5,8 @@ const rateLimit = require("express-rate-limit");
 const session = require("express-session");
 const path = require("path");
 const sequelize = require("./config/database");
-require("./config/mongoose"); // auto-connect to MongoDB
+ // Mongo disabled for now; uncomment when you add a real Mongo URI
+ // require("./config/mongoose");
 
 // ─── 1) Create the Express app ────────────────────────────────────────────────
 const app = express();
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 // ─── 3.5) Serve uploaded files statically ────────────────────────────────────
 // If someone visits “/uploads/foo.jpg”, Express will look for “backend/uploads/foo.jpg”
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/assets", express.static(path.join(__dirname, "../client/assets")));
 
 // ─── 4) Session middleware (no Redis) ─────────────────────────────────────────
 app.use(
@@ -52,6 +54,7 @@ const surrenderRoutes = require("./routes/surrenders");
 const healthInspectionRoutes = require("./routes/healthInspections");
 const adoptionAppRoutes = require("./routes/adoptionApps");
 const clientsRoutes = require("./routes/clients");
+const recoveryRoutes = require("./routes/accountRecovery");
 
 // Rate-limit auth routes
 const authLimiter = rateLimit({
@@ -60,6 +63,13 @@ const authLimiter = rateLimit({
   message: { error: "Too many attempts, please try again later" },
 });
 
+const recoveryLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { error: "Too many recovery attempts, please try again later" },
+});
+
+
 app.use("/api/auth", authLimiter, authRoutes);
 app.use("/api/reptiles", reptileRoutes);
 app.use("/api/adoptions", adoptionRoutes);
@@ -67,6 +77,7 @@ app.use("/api/surrenders", surrenderRoutes);
 app.use("/api/health-inspections", healthInspectionRoutes);
 app.use("/api/adoption-apps", adoptionAppRoutes);
 app.use("/api/clients", clientsRoutes);
+app.use("/api/account-recovery", recoveryLimiter, recoveryRoutes);
 
 // ─── 7) Test PostgreSQL connection & sync ──────────────────────────────────────
 sequelize
