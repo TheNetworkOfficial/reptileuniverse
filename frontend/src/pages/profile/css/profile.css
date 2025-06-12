@@ -2,11 +2,60 @@
 
 #profile-section {
   margin: 120px auto;
-  width: 60vw;
-  max-width: 600px;
+  width: 70vw;
+  max-width: 900px;
   background-color: #2a2a2a;
   padding: 20px;
   border-radius: 10px;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.left-section,
+.right-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.bottom-section {
+  grid-column: 1 / span 2;
+}
+
+.avatar-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px dashed #555;
+  padding: 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.avatar-zone.dragover {
+  background-color: #3a3a3a;
+}
+
+.avatar-zone.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.avatar-zone img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+#avatar-input {
+  display: none;
 }
 
 .form-group {

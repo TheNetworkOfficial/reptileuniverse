@@ -3,7 +3,13 @@ const editBtn = document.getElementById("edit-btn");
 const saveBtn = document.getElementById("save-btn");
 const cancelBtn = document.getElementById("cancel-btn");
 const inputs = form.querySelectorAll("input");
+const avatarImg = document.getElementById("profile-avatar");
+const avatarInput = document.getElementById("avatar-input");
+const dropZone = document.getElementById("avatar-dropzone");
+let newAvatarFile = null;
 let initialData = {};
+const DEFAULT_AVATAR = "../../../assets/images/icons/defaultAvatar.png";
+dropZone.classList.add("disabled");
 
 async function loadProfile() {
   try {
@@ -23,6 +29,7 @@ async function loadProfile() {
         input.value = "";
       }
     });
+    avatarImg.src = data.avatarUrl || DEFAULT_AVATAR;
   } catch (err) {
     console.error("Load profile failed:", err);
   }
@@ -30,15 +37,13 @@ async function loadProfile() {
 
 function toggleEdit(editing) {
   inputs.forEach((input) => {
-    if (input.id === "username") return; // username not editable
     input.disabled = !editing;
   });
+  dropZone.classList.toggle("disabled", !editing);
   editBtn.style.display = editing ? "none" : "inline-block";
   saveBtn.style.display = editing ? "inline-block" : "none";
   cancelBtn.style.display = editing ? "inline-block" : "none";
 }
-
-editBtn.addEventListener("click", () => toggleEdit(true));
 
 cancelBtn.addEventListener("click", () => {
   inputs.forEach((input) => {
@@ -46,6 +51,8 @@ cancelBtn.addEventListener("click", () => {
     input.value = initialData[name] || "";
     input.disabled = true;
   });
+  avatarImg.src = initialData.avatarUrl || DEFAULT_AVATAR;
+  newAvatarFile = null;
   toggleEdit(false);
 });
 
@@ -66,9 +73,60 @@ saveBtn.addEventListener("click", async () => {
     initialData = data;
     toggleEdit(false);
     inputs.forEach((i) => (i.disabled = true));
+    if (newAvatarFile) {
+      const fd = new FormData();
+      fd.append("avatar", newAvatarFile);
+      const avatarRes = await fetch("/api/auth/profile/avatar", {
+        method: "POST",
+        credentials: "include",
+        body: fd,
+      });
+      if (avatarRes.ok) {
+        const avatarData = await avatarRes.json();
+        initialData.avatarUrl = avatarData.avatarUrl;
+        avatarImg.src = avatarData.avatarUrl;
+        const headerPic = document.querySelector(".profile-pic");
+        if (headerPic) headerPic.src = avatarData.avatarUrl;
+        newAvatarFile = null;
+      }
+    }
   } catch (err) {
     console.error("Save profile failed:", err);
   }
 });
 
-document.addEventListener("DOMContentLoaded", loadProfile);
+document.addEventListener("DOMContentLoaded", () => {
+  loadProfile();
+  dropZone.addEventListener("click", () => {
+    if (dropZone.classList.contains("disabled")) return;
+    avatarInput.click();
+  });
+
+  avatarInput.addEventListener("change", (e) => {
+    handleFile(e.target.files[0]);
+  });
+
+  dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    if (!dropZone.classList.contains("disabled")) {
+      dropZone.classList.add("dragover");
+    }
+  });
+
+  dropZone.addEventListener("dragleave", () =>
+    dropZone.classList.remove("dragover"),
+  );
+
+  dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropZone.classList.remove("dragover");
+    if (dropZone.classList.contains("disabled")) return;
+    handleFile(e.dataTransfer.files[0]);
+  });
+});
+
+function handleFile(file) {
+  if (!file) return;
+  newAvatarFile = file;
+  avatarImg.src = URL.createObjectURL(file);
+}

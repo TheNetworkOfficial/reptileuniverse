@@ -2,6 +2,33 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const router = express.Router();
 const User = require("../models/user");
+const multer = require("multer");
+const path = require("path");
+
+const avatarStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "../uploads/"));
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const ext = path.extname(file.originalname);
+    cb(null, uniqueSuffix + ext);
+  },
+});
+
+function avatarFilter(req, file, cb) {
+  if (file.mimetype.startsWith("image/")) {
+    cb(null, true);
+  } else {
+    cb(new Error("Only image files are allowed"), false);
+  }
+}
+
+const avatarUpload = multer({
+  storage: avatarStorage,
+  fileFilter: avatarFilter,
+  limits: { fileSize: 5 * 1024 * 1024 },
+});
 
 // Middleware to protect routes
 function ensureAuth(req, res, next) {
@@ -60,6 +87,25 @@ router.put("/profile", ensureAuth, async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+
+router.post(
+  "/profile/avatar",
+  ensureAuth,
+  avatarUpload.single("avatar"),
+  async (req, res) => {
+    try {
+      const user = await User.findByPk(req.session.userId);
+      if (!user) return res.status(404).json({ error: "User not found" });
+      if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+      user.avatarUrl = `/uploads/${req.file.filename}`;
+      await user.save();
+      res.json({ avatarUrl: user.avatarUrl });
+    } catch (err) {
+      console.error("Avatar upload error:", err);
+      res.status(500).json({ error: "Server error" });
+    }
+  },
+);
 
 // — REGISTER — POST /api/auth/register
 router.post("/register", async (req, res) => {
