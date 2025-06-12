@@ -8,7 +8,11 @@ const avatarInput = document.getElementById("avatar-input");
 const dropZone = document.getElementById("avatar-dropzone");
 let newAvatarFile = null;
 let initialData = {};
-const DEFAULT_AVATAR = "../../../assets/images/icons/defaultAvatar.png";
+
+import defaultAvatar from "../../../assets/images/icons/defaultAvatar.png";
+const DEFAULT_AVATAR = defaultAvatar;
+
+// start with editing disabled
 dropZone.classList.add("disabled");
 
 async function loadProfile() {
@@ -21,6 +25,7 @@ async function loadProfile() {
     if (!res.ok) throw new Error(res.status);
     const data = await res.json();
     initialData = data;
+
     inputs.forEach((input) => {
       const name = input.name;
       if (data[name] !== undefined && data[name] !== null) {
@@ -29,6 +34,7 @@ async function loadProfile() {
         input.value = "";
       }
     });
+
     avatarImg.src = data.avatarUrl || DEFAULT_AVATAR;
   } catch (err) {
     console.error("Load profile failed:", err);
@@ -40,6 +46,7 @@ function toggleEdit(editing) {
     input.disabled = !editing;
   });
   dropZone.classList.toggle("disabled", !editing);
+
   editBtn.style.display = editing ? "none" : "inline-block";
   saveBtn.style.display = editing ? "inline-block" : "none";
   cancelBtn.style.display = editing ? "inline-block" : "none";
@@ -61,6 +68,7 @@ saveBtn.addEventListener("click", async () => {
   inputs.forEach((input) => {
     payload[input.name] = input.value;
   });
+
   try {
     const res = await fetch("/api/auth/profile", {
       method: "PUT",
@@ -71,8 +79,12 @@ saveBtn.addEventListener("click", async () => {
     if (!res.ok) throw new Error(res.status);
     const data = await res.json();
     initialData = data;
+
+    // exit edit mode
     toggleEdit(false);
     inputs.forEach((i) => (i.disabled = true));
+
+    // if avatar changed, upload it
     if (newAvatarFile) {
       const fd = new FormData();
       fd.append("avatar", newAvatarFile);
@@ -97,6 +109,11 @@ saveBtn.addEventListener("click", async () => {
 
 document.addEventListener("DOMContentLoaded", () => {
   loadProfile();
+
+  // wire up the Edit button
+  editBtn.addEventListener("click", () => toggleEdit(true));
+
+  // avatar click/drop handlers
   dropZone.addEventListener("click", () => {
     if (dropZone.classList.contains("disabled")) return;
     avatarInput.click();
@@ -114,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   dropZone.addEventListener("dragleave", () =>
-    dropZone.classList.remove("dragover"),
+    dropZone.classList.remove("dragover")
   );
 
   dropZone.addEventListener("drop", (e) => {

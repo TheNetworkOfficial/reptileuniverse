@@ -90,9 +90,43 @@
     text-align: center;
   }
 
-  .deposit-btn {
+  .appointment-btn {
     grid-area: btn;
     width: 100%;
     text-align: center;
   }
+}
+
+/* Appointment popup overlay */
+.appointment-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+}
+
+.appointment-overlay .popup-content {
+  background-color: var(--container-background);
+  padding: 20px 30px;
+  border-radius: var(--border-radius);
+  max-width: 400px;
+  text-align: center;
+  position: relative;
+}
+
+.appointment-overlay .close-button {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 28px;
+  cursor: pointer;
 }
