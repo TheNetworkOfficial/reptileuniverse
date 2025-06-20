@@ -1,6 +1,12 @@
 // 1) Load .env as early as possible
 require("dotenv").config();
 
+// — Sanity check: ensure SESSION_SECRET is set —
+if (!process.env.SESSION_SECRET) {
+  console.error("🔥 SESSION_SECRET is not defined! Check your .env file or PM2 --update-env.");
+  process.exit(1);
+}
+
 const path = require("path");
 const express = require("express");
 const helmet = require("helmet");
