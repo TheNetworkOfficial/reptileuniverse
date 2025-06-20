@@ -1,53 +1,70 @@
+// 1) Load .env as early as possible
 require("dotenv").config();
+
+const path = require("path");
 const express = require("express");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const session = require("express-session");
-const path = require("path");
-const sequelize = require("./config/database");
- // Mongo disabled for now; uncomment when you add a real Mongo URI
- // require("./config/mongoose");
+const cors = require("cors");
 
-// ─── 1) Create the Express app ────────────────────────────────────────────────
+// ─── 2) Create the Express app ────────────────────────────────────────────────
 const app = express();
+
+// ─── 3) If behind Lightsail/Nginx proxy, trust it so req.secure is correct ──────
 app.set("trust proxy", 1);
 
-// ─── 2) Security middleware ───────────────────────────────────────────────────
+// ─── 4) Security & parsing middleware ──────────────────────────────────────────
 app.use(helmet());
-
-// ─── 3) Body parsing ──────────────────────────────────────────────────────────
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ─── 3.5) Serve uploaded files statically ────────────────────────────────────
-// If someone visits “/uploads/foo.jpg”, Express will look for “backend/uploads/foo.jpg”
+// ─── 5) Static file serving ────────────────────────────────────────────────────
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/assets", express.static(path.join(__dirname, "../client/assets")));
 
-// ─── 4) Session middleware (no Redis) ─────────────────────────────────────────
+// ─── 6) CORS (allow credentials + your origin) ─────────────────────────────────
 app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    // (MemoryStore is fine for development; it auto-expires on restart)
-    cookie: {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // in prod, require HTTPS
-      sameSite: "lax",
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
-    },
-  }),
+  cors({
+    origin: "https://reptileuniverse.org", // adjust if different
+    credentials: true,
+  })
 );
 
-// ─── 5) Test session route (optional) ─────────────────────────────────────────
+// ─── 7) Session middleware ─────────────────────────────────────────────────────
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,       // ← must be defined
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // HTTPS only in prod
+      sameSite: "lax",
+      maxAge: 1000 * 60 * 60 * 24,             // 1 day
+    },
+  })
+);
+
+// ─── 8) (Optional) A quick debug endpoint ───────────────────────────────────────
 app.get("/api/test-session", (req, res) => {
   if (!req.session.count) req.session.count = 0;
-  req.session.count += 1;
+  req.session.count++;
   res.json({ visits: req.session.count });
 });
 
-// ─── 6) Mount your route modules ───────────────────────────────────────────────
+// ─── 9) Rate-limiters & route mounting ──────────────────────────────────────────
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  message: { error: "Too many attempts, please try again later" },
+});
+const recoveryLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { error: "Too many recovery attempts, please try again later" },
+});
+
 const authRoutes = require("./routes/auth");
 const reptileRoutes = require("./routes/reptiles");
 const adoptionRoutes = require("./routes/adoptions");
@@ -56,20 +73,6 @@ const healthInspectionRoutes = require("./routes/healthInspections");
 const adoptionAppRoutes = require("./routes/adoptionApps");
 const clientsRoutes = require("./routes/clients");
 const recoveryRoutes = require("./routes/accountRecovery");
-
-// Rate-limit auth routes
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 20, // limit each IP to 20 requests per windowMs
-  message: { error: "Too many attempts, please try again later" },
-});
-
-const recoveryLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 10,
-  message: { error: "Too many recovery attempts, please try again later" },
-});
-
 
 app.use("/api/auth", authLimiter, authRoutes);
 app.use("/api/reptiles", reptileRoutes);
@@ -80,14 +83,13 @@ app.use("/api/adoption-apps", adoptionAppRoutes);
 app.use("/api/clients", clientsRoutes);
 app.use("/api/account-recovery", recoveryLimiter, recoveryRoutes);
 
-// ─── 7) Test PostgreSQL connection & sync ──────────────────────────────────────
+// ─── 10) Database sync & start ─────────────────────────────────────────────────
+const sequelize = require("./config/database");
 sequelize
   .authenticate()
   .then(() => console.log("PostgreSQL connected"))
   .catch((err) => console.error("Postgres connection error", err));
 
-// Load models so Sequelize knows about them. The variables are not used
-// directly, so we avoid unused variable lint errors by not assigning them.
 require("./models/user");
 require("./models/reptile");
 require("./models/adoption");
@@ -100,6 +102,5 @@ sequelize
   .then(() => console.log("All tables synced"))
   .catch((err) => console.error("Sync error", err));
 
-// ─── 8) Start the server ───────────────────────────────────────────────────────
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
