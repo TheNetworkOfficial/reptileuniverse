@@ -33,7 +33,7 @@
 #registration-form input[type="text"],
 #registration-form input[type="email"],
 #registration-form input[type="password"],
-#login-form input {
+#registration-form input {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
