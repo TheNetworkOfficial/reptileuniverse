@@ -32,6 +32,7 @@
 
 /* Style the input fields */
 #login-form input[type="text"],
+#login-form input[type="username"],
 #login-form input[type="password"] {
     width: 100%;
     padding: 10px;
