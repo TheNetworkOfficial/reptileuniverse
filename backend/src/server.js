@@ -10,6 +10,7 @@ const sequelize = require("./config/database");
 
 // ─── 1) Create the Express app ────────────────────────────────────────────────
 const app = express();
+app.set("trust proxy", 1);
 
 // ─── 2) Security middleware ───────────────────────────────────────────────────
 app.use(helmet());
