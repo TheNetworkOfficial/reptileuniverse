@@ -57,10 +57,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       // 5) Build carousel from `animal.image_urls`
-      const images =
-        Array.isArray(animal.image_urls) && animal.image_urls.length > 0
-          ? animal.image_urls
-          : ['/path/to/defaultImage.jpg'];
+      // build an array of fully-qualified URLs pointing at /uploads
+      const images = Array.isArray(animal.image_urls) && animal.image_urls.length > 0
+        ? animal.image_urls.map(u => `${window.location.origin}${u}`)
+        : ['/assets/images/defaultImage.jpg'];
 
       let currentIndex = 0;
       const leftImg = document.querySelector('.carousel-img.left');
