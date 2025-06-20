@@ -33,7 +33,7 @@
 /* Style the input fields */
 #login-form input[type="text"],
 #login-form input[type="password"],
- #login-form input {
+#login-form input {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
