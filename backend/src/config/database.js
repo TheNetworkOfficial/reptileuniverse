@@ -1,12 +1,22 @@
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
-let sequelize;
+ const isProduction = process.env.NODE_ENV === 'production';
+ let sequelize;
 
 // If a dialect is supplied via environment variables, use the provided
 // database connection details. Otherwise fall back to an in-memory SQLite
 // instance so the app can run without a full database setup.
 if (process.env.DB_DIALECT) {
+  const dialectOpts = isProduction
+    ? {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false,
+        },
+      }
+    : {};
+
   sequelize = new Sequelize(
     process.env.DB_NAME_DEV,
     process.env.DB_USERNAME,
@@ -15,13 +25,8 @@ if (process.env.DB_DIALECT) {
       host: process.env.DB_HOST,
       port: process.env.DB_PORT,
       dialect: process.env.DB_DIALECT,
-      logging: false,
-      dialectOptions: {
-        ssl: {
-          require: true,
-          rejectUnauthorized: false,
-        }
-      }
+    logging: false,
+    dialectOptions: dialectOpts
     }
   );
 } else {
