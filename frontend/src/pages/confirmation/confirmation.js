@@ -2,4 +2,4 @@
 import "./css/confirmation.css";
 
 // Importing JavaScript files
-import "./scripts/confirmationImg.js";
+//import "./scripts/confirmationImg.js";

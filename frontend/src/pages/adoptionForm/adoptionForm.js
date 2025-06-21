@@ -5,3 +5,4 @@ import "./css/adoptionForm.css";
 import "./scripts/formWizard.js";
 import "./scripts/adoptionFormLoader.js";
 import "./scripts/submitAdoptionForm.js";
+import "./scripts/authRedirect.js";

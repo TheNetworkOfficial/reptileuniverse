@@ -1,13 +1,11 @@
-import leopardGecko from '../../../assets/images/animals/leopardGecko.jpg';
-import leopardGecko2 from '../../../assets/images/animals/leopardGecko2.jpg';
-import leopardGecko3 from '../../../assets/images/animals/leopardGecko3.jpg';
+import defaultImg from '../../../assets/images/icons/defaultAvatar.png';
 
 document.addEventListener('DOMContentLoaded', function () {
     // Array of image URLs – add as many as you like
     const images = [
-        leopardGecko,
-        leopardGecko2,
-        leopardGecko3
+        defaultImg,
+        defaultImg,
+        defaultImg
     ];
   
     let currentIndex = 1; // Start with the second image as center

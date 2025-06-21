@@ -66,7 +66,7 @@ const { RedisStore } = require("connect-redis");
       saveUninitialized: false,
       cookie: {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: "auto",    // ← only add Secure flag when req.secure===true
         sameSite: "lax",
         maxAge: 1000 * 60 * 60 * 24, // 1 day
       },

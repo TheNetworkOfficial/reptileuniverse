@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const desc = params.get("reptileDescription");
   const reptileId = params.get("reptileId");
+  const reptileImg = params.get("reptileImage");
 
   if (desc) {
     // 2) If there is a matching input on the page, populate it
@@ -20,6 +21,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const idInput = document.getElementById("reptileId");
     if (idInput) {
       idInput.value = reptileId;
+    }
+  }
+
+  if (reptileImg) {
+    const imgInput = document.getElementById("reptileImage");
+    if (imgInput) {
+      imgInput.value = reptileImg;
     }
   }
 });
