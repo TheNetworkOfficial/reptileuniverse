@@ -144,11 +144,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (applyBtn) {
         // ❷ When the user clicks it, redirect to adoptionForm.html
         applyBtn.addEventListener("click", () => {
-          // Pass the animal’s name, id, and first image via query parameters
           const encodedName = encodeURIComponent(animal.name);
           const encodedId = encodeURIComponent(animal.id);
-          const encodedImg = encodeURIComponent(images[0]);
-          window.location.href = `adoptionForm.html?reptileDescription=${encodedName}&reptileId=${encodedId}&reptileImage=${encodedImg}`;
+          window.location.href = `adoptionForm.html?reptileDescription=${encodedName}&reptileId=${encodedId}`;
         });
       }
 

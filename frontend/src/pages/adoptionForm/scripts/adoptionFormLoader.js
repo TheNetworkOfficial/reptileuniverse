@@ -23,11 +23,4 @@ document.addEventListener("DOMContentLoaded", () => {
       idInput.value = reptileId;
     }
   }
-
-  if (reptileImg) {
-    const imgInput = document.getElementById("reptileImage");
-    if (imgInput) {
-      imgInput.value = reptileImg;
-    }
-  }
 });

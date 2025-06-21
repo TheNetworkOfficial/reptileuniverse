@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const entries = Object.fromEntries(new FormData(form).entries());
-    const { reptileImage, reptileDescription, reptileId, ...payload } = entries;
+    const { reptileDescription, reptileId, ...payload } = entries;
     try {
       const res = await fetch("/api/adoption-apps", {
         method: "POST",
@@ -20,9 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       const redirect = `confirmation.html?reptileDescription=${encodeURIComponent(
         reptileDescription,
-      )}&reptileId=${encodeURIComponent(reptileId)}&reptileImage=${encodeURIComponent(
-        reptileImage,
-      )}`;
+      )}&reptileId=${encodeURIComponent(reptileId)}`;
       window.location.href = redirect;
     } catch (err) {
       console.error("Submission error:", err);
