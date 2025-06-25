@@ -2,6 +2,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const list = document.querySelector(".adoption-list");
   if (!list) return;
 
+  const popup = document.getElementById("appointment-popup");
+  const closeBtn = popup ? popup.querySelector(".close-button") : null;
+
+  function openPopup() {
+    if (popup) popup.style.display = "flex";
+  }
+
+  function closePopup() {
+    if (popup) popup.style.display = "none";
+  }
+
+  if (closeBtn) closeBtn.addEventListener("click", closePopup);
+
+  list.addEventListener("click", (e) => {
+    if (e.target.classList.contains("appointment-btn")) {
+      e.preventDefault();
+      openPopup();
+    }
+  });
+
   async function loadApps() {
     try {
       const [appRes, reptileRes] = await Promise.all([
@@ -43,9 +63,9 @@ document.addEventListener("DOMContentLoaded", () => {
       let buttonHTML = "";
 
       if (statusText === "approved" && pendingIds.has(app.reptile_id)) {
-        statusText = "awaiting deposit";
+        statusText = "appointment required";
         statusClass = "pending";
-        buttonHTML = `<button class="btn deposit-btn">Add Deposit</button>`;
+        buttonHTML = `<button class="btn appointment-btn">Schedule Appointment</button>`;
       }
 
       item.innerHTML = `
