@@ -42,7 +42,8 @@
   --fade-in-animation: fadeIn 2s;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   overflow-x: hidden;
 }
@@ -66,4 +67,5 @@ body {
 
 #footer-placeholder {
   flex-shrink: 0;
+  margin-top: auto; /* Push footer to bottom even if content is short */
 }

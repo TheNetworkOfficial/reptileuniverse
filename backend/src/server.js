@@ -101,6 +101,7 @@ const { RedisStore } = require("connect-redis");
   const reptileRoutes = require("./routes/reptiles");
   const adoptionRoutes = require("./routes/adoptions");
   const surrenderRoutes = require("./routes/surrenders");
+
   const healthInspectionRoutes = require("./routes/healthInspections");
   const adoptionAppRoutes = require("./routes/adoptionApps");
   const clientsRoutes = require("./routes/clients");
