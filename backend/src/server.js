@@ -97,7 +97,7 @@ const { RedisStore } = require("connect-redis");
     message: { error: "Too many recovery attempts, please try again later" },
   });
 
-  const authRoutes = require("./routes/auth");
+  const { router: authRoutes } = require("./routes/auth");
   const reptileRoutes = require("./routes/reptiles");
   const adoptionRoutes = require("./routes/adoptions");
   const surrenderRoutes = require("./routes/surrenders");
@@ -106,6 +106,7 @@ const { RedisStore } = require("connect-redis");
   const adoptionAppRoutes = require("./routes/adoptionApps");
   const clientsRoutes = require("./routes/clients");
   const recoveryRoutes = require("./routes/accountRecovery");
+  const adminRoutes = require("./routes/admin");
 
   app.use("/api/auth", authLimiter, authRoutes);
   app.use("/api/reptiles", reptileRoutes);
@@ -115,6 +116,7 @@ const { RedisStore } = require("connect-redis");
   app.use("/api/adoption-apps", adoptionAppRoutes);
   app.use("/api/clients", clientsRoutes);
   app.use("/api/account-recovery", recoveryLimiter, recoveryRoutes);
+  app.use("/api/admin", adminRoutes);
 
   // 10) Database sync & start
   const sequelize = require("./config/database");

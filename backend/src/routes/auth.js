@@ -36,6 +36,11 @@ function ensureAuth(req, res, next) {
   res.status(401).json({ error: "Unauthorized" });
 }
 
+function ensureAdmin(req, res, next) {
+  if (req.session.userId && req.session.isAdmin) return next();
+  res.status(403).json({ error: "Forbidden" });
+}
+
 // — GET current user — GET /api/auth/profile
 router.get("/profile", ensureAuth, async (req, res) => {
   try {
@@ -119,6 +124,7 @@ router.post("/register", async (req, res) => {
     const newUser = await User.create({ username, email, password_hash });
     // Auto-login
     req.session.userId = newUser.id;
+    req.session.isAdmin = newUser.isAdmin;
     res.status(201).json({ message: "User registered successfully" });
   } catch (err) {
     console.error("Register error:", err);
@@ -144,6 +150,7 @@ router.post("/login", async (req, res) => {
     // Success → set session
     req.session.userId = user.id;
     req.session.username = user.username;
+    req.session.isAdmin = user.isAdmin;
     res.json({ message: "Logged in successfully" });
   } catch (err) {
     console.error("Login error:", err);
@@ -163,4 +170,4 @@ router.post("/logout", (req, res) => {
   });
 });
 
-module.exports = router;
+module.exports = { router, ensureAuth, ensureAdmin };

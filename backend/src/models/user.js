@@ -35,6 +35,7 @@ const User = sequelize.define(
     othersResiding: { type: DataTypes.STRING },
     residingDetails: { type: DataTypes.STRING },
     childrenLiving: { type: DataTypes.STRING },
+    isAdmin: { type: DataTypes.BOOLEAN, defaultValue: false },
   },
   {
     tableName: "users",

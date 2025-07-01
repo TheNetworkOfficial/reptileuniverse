@@ -35,8 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Initial fetch of reptiles marked "adoptable"
-  fetch("/api/reptiles?status=adoptable")
+  // Initial fetch of reptiles marked "for sale"
+  fetch("/api/reptiles?status=for%20sale")
     .then((res) => {
       if (!res.ok) throw new Error(`Fetch error: ${res.status}`);
       return res.json();

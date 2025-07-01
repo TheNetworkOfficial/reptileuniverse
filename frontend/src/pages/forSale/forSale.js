@@ -1,6 +1,6 @@
 // Importing CSS files
-import "./css/list.css";
+import "./css/forSale.css";
 
 // Importing JavaScript files
-import "./scripts/creatureListLoader.js";
+import "./scripts/forSaleListLoader.js";
 import "./scripts/search.js";

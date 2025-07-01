@@ -15,6 +15,7 @@ module.exports = {
     registration: "./src/pages/registration/registration.js",
     resetPassword: "./src/pages/resetPassword/resetPassword.js",
     list: "./src/pages/list/list.js",
+    forSale: "./src/pages/forSale/forSale.js",
     details: "./src/pages/details/details.js",
     adoptionForm: "./src/pages/adoptionForm/adoptionForm.js",
     surrenderForm: "./src/pages/surrenderForm/surrenderForm.js",
@@ -117,6 +118,12 @@ module.exports = {
       favicon: "./src/assets/images/icons/reptileUniverseLogo.jpg",
     }),
     new HtmlWebpackPlugin({
+      template: "./src/pages/forSale/forSale.html",
+      filename: "forSale.html",
+      chunks: ["main", "forSale"],
+      favicon: "./src/assets/images/icons/reptileUniverseLogo.jpg",
+    }),
+    new HtmlWebpackPlugin({
       template: "./src/pages/details/details.html",
       filename: "details.html",
       chunks: ["main", "details"],
@@ -153,20 +160,20 @@ module.exports = {
       favicon: "./src/assets/images/icons/reptileUniverseLogo.jpg",
     }),
     new HtmlWebpackPlugin({
-      template: './src/pages/popups/admin-add-skill-popup.html',
-      filename: 'admin-add-skill-popup.html'
+      template: "./src/pages/popups/admin-add-skill-popup.html",
+      filename: "admin-add-skill-popup.html",
     }),
     new HtmlWebpackPlugin({
-      template: './src/pages/popups/admin-add-animal-popup.html',
-      filename: 'admin-add-animal-popup.html'
+      template: "./src/pages/popups/admin-add-animal-popup.html",
+      filename: "admin-add-animal-popup.html",
     }),
     new HtmlWebpackPlugin({
-      template: './src/pages/popups/admin-health-inspections-popup.html',
-      filename: 'admin-health-inspections-popup.html'
+      template: "./src/pages/popups/admin-health-inspections-popup.html",
+      filename: "admin-health-inspections-popup.html",
     }),
     new HtmlWebpackPlugin({
-      template: './src/pages/popups/admin-adoption-app-popup.html',
-      filename: 'admin-adoption-app-popup.html'
+      template: "./src/pages/popups/admin-adoption-app-popup.html",
+      filename: "admin-adoption-app-popup.html",
     }),
   ],
   devServer: {

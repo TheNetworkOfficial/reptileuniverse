@@ -1,6 +1,7 @@
 document.addEventListener("dynamicContentLoaded", async () => {
   const loginLi = document.getElementById("login-container");
   const profileLi = document.getElementById("profile-dropdown");
+  const adminLi = document.getElementById("admin-link");
   const usernameElem = profileLi?.querySelector(".profile-username");
   const picElem = profileLi?.querySelector(".profile-pic");
   const logoutBtn = document.getElementById("logout-btn");
@@ -17,6 +18,7 @@ document.addEventListener("dynamicContentLoaded", async () => {
       // Show profile, hide login
       if (loginLi) loginLi.style.display = "none";
       if (profileLi) profileLi.style.display = "block";
+      if (adminLi) adminLi.style.display = user.isAdmin ? "block" : "none";
 
       // Populate
       if (usernameElem) usernameElem.textContent = user.username;
@@ -33,17 +35,20 @@ document.addEventListener("dynamicContentLoaded", async () => {
           // on success, reverse the UI
           loginLi.style.display = "block";
           profileLi.style.display = "none";
+          if (adminLi) adminLi.style.display = "none";
         });
       }
     } else {
       // Not logged in: show login, hide profile
       if (loginLi) loginLi.style.display = "block";
       if (profileLi) profileLi.style.display = "none";
+      if (adminLi) adminLi.style.display = "none";
     }
   } catch (err) {
     console.error("Auth check failed:", err);
     // On error, default to showing login
     if (loginLi) loginLi.style.display = "block";
     if (profileLi) profileLi.style.display = "none";
+    if (adminLi) adminLi.style.display = "none";
   }
 });
