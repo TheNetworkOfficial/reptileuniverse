@@ -14,6 +14,7 @@
 .content-wrapper {
   flex: 1;
   display: flex;
+  padding: 25vh 0vh 25vh 0vh;
   flex-direction: column;
   justify-content: center;
   align-items: center;
