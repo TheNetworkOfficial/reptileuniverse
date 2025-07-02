@@ -107,6 +107,7 @@ const { RedisStore } = require("connect-redis");
   const clientsRoutes = require("./routes/clients");
   const recoveryRoutes = require("./routes/accountRecovery");
   const adminRoutes = require("./routes/admin");
+  const adminUserRoutes = require("./routes/adminUsers");
 
   app.use("/api/auth", authLimiter, authRoutes);
   app.use("/api/reptiles", reptileRoutes);
@@ -117,6 +118,7 @@ const { RedisStore } = require("connect-redis");
   app.use("/api/clients", clientsRoutes);
   app.use("/api/account-recovery", recoveryLimiter, recoveryRoutes);
   app.use("/api/admin", adminRoutes);
+  app.use("/api/admin-users", adminUserRoutes);
 
   // 10) Database sync & start
   const sequelize = require("./config/database");

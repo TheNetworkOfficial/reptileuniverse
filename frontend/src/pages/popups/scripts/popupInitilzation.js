@@ -6,7 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
     "admin-add-skill-popup.html",
     "admin-add-animal-popup.html",
     "admin-health-inspections-popup.html",
-    "admin-adoption-app-popup.html"
+    "admin-adoption-app-popup.html",
+    "admin-add-admin-popup.html",
   ];
   let loadedPopupsCount = 0;
 
@@ -25,8 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 2) Then wire up whatever triggers you have
     const triggers = document.querySelectorAll(triggerSelector);
-    triggers.forEach(trigger => {
-      trigger.addEventListener("click", e => {
+    triggers.forEach((trigger) => {
+      trigger.addEventListener("click", (e) => {
         e.preventDefault();
         popup.style.display = "flex";
       });
@@ -43,20 +44,28 @@ document.addEventListener("DOMContentLoaded", () => {
     const popupConfigurations = [
       {
         popupId: "skill-popup-container", // ID from admin-add-skill-popup.html
-        triggerSelector: "#add-skill-btn"  // Button in adminSkills.html
+        triggerSelector: "#add-skill-btn", // Button in adminSkills.html
       },
       {
         popupId: "animal-popup-container", // ID from admin-add-animal-popup.html
-        triggerSelector: "#add-animal-btn" // Button in admin.html
+        triggerSelector: "#add-animal-btn", // Button in admin.html
+      },
+      {
+        popupId: "animal-popup-container",
+        triggerSelector: "#add-sale-animal-btn",
       },
       {
         popupId: "inspection-popup-container", // ID from admin-inspection-popup.html
-        triggerSelector: ".inspection-cell" // Button in admin.html
+        triggerSelector: ".inspection-cell", // Button in admin.html
       },
       {
         popupId: "adoption-app-popup-container", // ID from admin-adoption-app-popup.html
-        triggerSelector: ".view-app-btn" // Button in pendingAdoptionsTab.js
-      }
+        triggerSelector: ".view-app-btn", // Button in pendingAdoptionsTab.js
+      },
+      {
+        popupId: "add-admin-popup-container",
+        triggerSelector: "#add-admin-btn",
+      },
     ];
 
     popupConfigurations.forEach((config) => {

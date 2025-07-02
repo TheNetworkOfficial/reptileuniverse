@@ -1,6 +1,6 @@
 /* List Page Specific Styles */
 #animal-list {
-  margin: 120px 50px 0px 50px; /* Top margin for header, bottom margin for footer */
+  margin: 120px 50px 120px 50px; /* Top margin for header, bottom margin for footer */
   padding: 0vw 10vw;
 }
 

@@ -30,6 +30,36 @@
   text-align: left;
 }
 
+#for-sale-animals .filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+#for-sale-animals table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#for-sale-animals th,
+#for-sale-animals td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+#admins table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#admins th,
+#admins td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
 #pending-apps table {
   width: 100%;
   border-collapse: collapse;
