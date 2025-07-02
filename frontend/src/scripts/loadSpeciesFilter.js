@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const speciesSelect = document.getElementById("filter-species");
   if (!speciesSelect) return;
 
+  // Use a relative path so this works when the site is served from a
+  // subdirectory.
   fetch("/api/reptiles/species")
     .then((res) => {
       if (!res.ok) throw new Error(`Fetch error: ${res.status}`);
