@@ -180,6 +180,10 @@ module.exports = {
       filename: "admin-add-admin-popup.html",
     }),
     new HtmlWebpackPlugin({
+      template: "./src/pages/popups/admin-animal-files-popup.html",
+      filename: "admin-animal-files-popup.html",
+    }),
+    new HtmlWebpackPlugin({
       template: "./src/pages/popups/deposit-notice-popup.html",
       filename: "deposit-notice-popup.html",
     }),

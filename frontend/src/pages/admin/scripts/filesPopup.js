@@ -1,5 +1,5 @@
 document.addEventListener("popupsLoaded", () => {
-  const container = document.getElementById("files-popup-container");
+  const container = document.getElementById("animal-files-popup-container");
   const listEl = document.getElementById("files-list");
   const form = document.getElementById("files-form");
   const input = document.getElementById("files-input");

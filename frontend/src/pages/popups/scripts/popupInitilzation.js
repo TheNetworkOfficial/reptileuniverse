@@ -72,6 +72,10 @@ document.addEventListener("DOMContentLoaded", () => {
         popupId: "deposit-popup-container",
         triggerSelector: ".deposit-btn",
       },
+      {
+        popupId: "animal-files-popup-container",
+        triggerSelector: ".animal-files-btn",
+      },
     ];
 
     popupConfigurations.forEach((config) => {
