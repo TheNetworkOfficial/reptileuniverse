@@ -52,6 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <td>${a.requirements || ""}</td>
         <td class="inspection-cell" data-id="${a.id}">...</td>
         <td>${(a.image_urls || []).join(", ")}</td>
+        <td><button class="files-btn btn-option">Files</button></td>
         <td><button class="edit-btn btn-option">Edit</button></td>
         <td><button class="delete-btn btn-option">Delete</button></td>`;
       tableBody.appendChild(row);
@@ -108,6 +109,8 @@ document.addEventListener("DOMContentLoaded", () => {
       deleteAnimal(id);
     } else if (e.target.classList.contains("inspection-cell")) {
       openInspectionPopup(id);
+    } else if (e.target.classList.contains("files-btn")) {
+      if (window.openFilesPopup) window.openFilesPopup(id);
     }
   });
 
@@ -167,7 +170,8 @@ document.addEventListener("DOMContentLoaded", () => {
         for (const file of imagesInput.files) {
           formData.append("images", file);
         }
-        if (!editingId && statusField) formData.append("status", statusField.value);
+        if (!editingId && statusField)
+          formData.append("status", statusField.value);
 
         // ———————————————————————————————
         // 5c) Determine POST vs PUT & send

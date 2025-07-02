@@ -103,6 +103,7 @@ const { RedisStore } = require("connect-redis");
   const surrenderRoutes = require("./routes/surrenders");
 
   const healthInspectionRoutes = require("./routes/healthInspections");
+  const animalFileRoutes = require("./routes/animalFiles");
   const adoptionAppRoutes = require("./routes/adoptionApps");
   const clientsRoutes = require("./routes/clients");
   const recoveryRoutes = require("./routes/accountRecovery");
@@ -114,6 +115,7 @@ const { RedisStore } = require("connect-redis");
   app.use("/api/adoptions", adoptionRoutes);
   app.use("/api/surrenders", surrenderRoutes);
   app.use("/api/health-inspections", healthInspectionRoutes);
+  app.use("/api/animal-files", animalFileRoutes);
   app.use("/api/adoption-apps", adoptionAppRoutes);
   app.use("/api/clients", clientsRoutes);
   app.use("/api/account-recovery", recoveryLimiter, recoveryRoutes);
@@ -132,6 +134,7 @@ const { RedisStore } = require("connect-redis");
   require("./models/adoption");
   require("./models/surrender");
   require("./models/healthInspection");
+  require("./models/animalFile");
   require("./models/adoptionApp");
 
   sequelize
