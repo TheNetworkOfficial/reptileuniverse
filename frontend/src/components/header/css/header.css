@@ -115,9 +115,9 @@
 }
 
 /* Mobile Menu Toggle Styles */
- .mobile-menu-toggle {
-   display: none; /* Assuming it will be visible only on mobile with further media query */
- }
+.mobile-menu-toggle {
+  display: none; /* Assuming it will be visible only on mobile with further media query */
+}
 
 /* Extra-small devices (max-width: 575.98px) */
 @media (max-width: 575.98px) {
@@ -237,7 +237,7 @@
   text-align: right;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #fff;  
+  color: #fff;
   margin-bottom: 20px;
 }
 
@@ -255,6 +255,13 @@
   color: #fff;
   text-decoration: none;
   font-size: 1.2rem;
+}
+
+/* Dropdown styles inside mobile menu */
+.mobile-menu .dropdown-content {
+  position: static;
+  padding-left: 1rem;
+  background-color: #2c2c2c;
 }
 
 .mobile-menu-overlay {

@@ -73,7 +73,33 @@
       <li><a href="index.html">Home</a></li>
       <li><a href="adoptable.html">Adoptions</a></li>
       <li><a href="forSale.html">For Sale</a></li>
-      <li><a href="#" id="logout-btn">Log Out</a></li>
+      <!-- MOBILE LOGIN button -->
+      <li id="mobile-login-container">
+        <a href="login.html" class="btn-login">Log In</a>
+      </li>
+
+      <!-- MOBILE PROFILE dropdown -->
+      <li id="mobile-profile-dropdown" class="dropdown" style="display: none">
+        <a href="#" class="dropdown-trigger">
+          <img
+            src="../../assets/images/icons/defaultAvatar.png"
+            alt="Avatar"
+            class="profile-pic"
+            width="24"
+            height="24"
+          />
+          <span class="profile-username">User</span>
+          <i class="fas fa-caret-down"></i>
+        </a>
+        <ul class="dropdown-content">
+          <li><a href="profile.html">My Profile</a></li>
+          <li><a href="myAdoptions.html">Pending Adoptions</a></li>
+          <li id="mobile-admin-link" style="display: none">
+            <a href="admin.html">Admin</a>
+          </li>
+          <li><a href="#" id="mobile-logout-btn">Log Out</a></li>
+        </ul>
+      </li>
     </ul>
 
     <!-- Mobile version of Quick Links and Contact Us -->
