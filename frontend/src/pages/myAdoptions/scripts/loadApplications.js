@@ -57,5 +57,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  list.addEventListener("click", (e) => {
+    if (e.target.classList.contains("deposit-btn")) {
+      const popup = document.getElementById("deposit-popup-container");
+      if (popup) popup.style.display = "flex";
+    }
+  });
+
   loadApps();
 });

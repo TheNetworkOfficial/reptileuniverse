@@ -14,7 +14,7 @@ module.exports = {
     login: "./src/pages/login/login.js",
     registration: "./src/pages/registration/registration.js",
     resetPassword: "./src/pages/resetPassword/resetPassword.js",
-    list: "./src/pages/list/list.js",
+    adoptable: "./src/pages/adoptable/adoptable.js",
     forSale: "./src/pages/forSale/forSale.js",
     details: "./src/pages/details/details.js",
     adoptionForm: "./src/pages/adoptionForm/adoptionForm.js",
@@ -112,9 +112,9 @@ module.exports = {
       favicon: "./src/assets/images/icons/reptileUniverseLogo.jpg",
     }),
     new HtmlWebpackPlugin({
-      template: "./src/pages/list/list.html",
-      filename: "list.html",
-      chunks: ["main", "list"],
+      template: "./src/pages/adoptable/adoptable.html",
+      filename: "adoptable.html",
+      chunks: ["main", "adoptable"],
       favicon: "./src/assets/images/icons/reptileUniverseLogo.jpg",
     }),
     new HtmlWebpackPlugin({
@@ -178,6 +178,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./src/pages/popups/admin-add-admin-popup.html",
       filename: "admin-add-admin-popup.html",
+    }),
+    new HtmlWebpackPlugin({
+      template: "./src/pages/popups/deposit-notice-popup.html",
+      filename: "deposit-notice-popup.html",
     }),
   ],
   devServer: {

@@ -1,6 +1,6 @@
 // models/reptile.js
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+const { Model, DataTypes } = require("sequelize");
+const sequelize = require("../config/database");
 
 class Reptile extends Model {}
 
@@ -27,11 +27,16 @@ Reptile.init(
       allowNull: false,
       defaultValue: "adoptable",
       validate: {
-        isIn: [["adoptable", "pendingPayment", "owned", "for sale", "deceased"]],
+        isIn: [
+          ["adoptable", "pendingPayment", "owned", "for sale", "deceased"],
+        ],
       },
     },
 
     owner_id: { type: DataTypes.INTEGER },
+
+    // Stores the prior status when the reptile is moved to pendingPayment
+    previous_status: { type: DataTypes.STRING },
   },
   {
     sequelize,

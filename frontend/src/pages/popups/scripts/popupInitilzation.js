@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "admin-health-inspections-popup.html",
     "admin-adoption-app-popup.html",
     "admin-add-admin-popup.html",
+    "deposit-notice-popup.html",
   ];
   let loadedPopupsCount = 0;
 
@@ -65,6 +66,10 @@ document.addEventListener("DOMContentLoaded", () => {
       {
         popupId: "add-admin-popup-container",
         triggerSelector: "#add-admin-btn",
+      },
+      {
+        popupId: "deposit-popup-container",
+        triggerSelector: ".deposit-btn",
       },
     ];
 

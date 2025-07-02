@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const desc = params.get("reptileDescription");
   const reptileId = params.get("reptileId");
-  const reptileImg = params.get("reptileImage");
 
   if (desc) {
     // 2) If there is a matching input on the page, populate it

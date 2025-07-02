@@ -1,8 +1,4 @@
 // animalsTab.js
-// (This file now covers both “animalsTab” and “updateAnimal” logic.)
-// ­­
-// Note: After pasting this into your project, remove any separate import of updateAnimal.js
-// from admin.js so that only this file is imported.
 
 // ————————————————————————————————————————————
 // 1) Wait for the DOM to be ready, then wire up everything.

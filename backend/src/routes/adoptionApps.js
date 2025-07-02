@@ -119,13 +119,62 @@ router.put("/:id/status", async (req, res) => {
     if (status === "approved" && targetId) {
       const reptile = await Reptile.findByPk(targetId);
       if (reptile) {
-        await reptile.update({ status: "pendingPayment" });
+        await reptile.update({
+          previous_status: reptile.status,
+          status: "pendingPayment",
+        });
         const user = await User.findByPk(app.user_id);
         if (user) broadcastPaymentPending(reptile, user);
       }
     }
 
     res.json(app);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Update payment status for a reptile awaiting deposit
+router.put("/payment/:reptileId", async (req, res) => {
+  try {
+    const { status } = req.body;
+    if (!["paid", "rejected"].includes(status)) {
+      return res.status(400).json({ error: "Invalid status" });
+    }
+
+    const reptile = await Reptile.findByPk(req.params.reptileId);
+    if (!reptile) {
+      return res.status(404).json({ error: "Reptile not found" });
+    }
+    if (reptile.status !== "pendingPayment") {
+      return res.status(400).json({ error: "Reptile not awaiting payment" });
+    }
+
+    const app = await AdoptionApp.findOne({
+      where: { reptile_id: reptile.id, status: "approved" },
+      order: [["createdAt", "DESC"]],
+    });
+    if (!app) {
+      return res.status(404).json({ error: "Adoption application not found" });
+    }
+
+    if (status === "paid") {
+      await reptile.update({
+        status: "owned",
+        owner_id: app.user_id,
+        previous_status: null,
+      });
+    } else {
+      const returnStatus = reptile.previous_status || "adoptable";
+      await reptile.update({
+        status: returnStatus,
+        owner_id: null,
+        previous_status: null,
+      });
+      await app.update({ status: "rejected" });
+    }
+
+    res.json({ message: "Updated" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -1,5 +1,5 @@
 // Importing CSS files
-import "./css/list.css";
+import "./css/adoptable.css";
 
 // Importing JavaScript files
 import "./scripts/creatureListLoader.js";
