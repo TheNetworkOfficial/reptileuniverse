@@ -4,9 +4,8 @@ const path     = require('path');
 const Sequelize= require('sequelize');
 const basename = path.basename(__filename);
 const env      = process.env.NODE_ENV || 'development';
-const config   = require('../../config/config.js')[env]; // adjust to your config location
+const config   = require('../../config/config.js')[env];
 
-// instantiate Sequelize
 const sequelize = new Sequelize(
   config.database,
   config.username,
@@ -16,7 +15,6 @@ const sequelize = new Sequelize(
 
 const db = { sequelize, Sequelize };
 
-// auto-import all model files in this folder
 fs
   .readdirSync(__dirname)
   .filter(file =>
@@ -25,15 +23,27 @@ fs
     file.slice(-3) === '.js'
   )
   .forEach(file => {
-    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
+    const modelDef = require(path.join(__dirname, file));
+    let model;
+
+    // if the export is a function(factory), call it
+    if (typeof modelDef === 'function' && modelDef.length === 2) {
+      model = modelDef(sequelize, Sequelize.DataTypes);
+    } else {
+      // assume it's a class extending Model
+      model = modelDef;
+      model.init(model.rawAttributes || model.attributes, {
+        sequelize,
+        modelName: model.name,
+        tableName: model.tableName || undefined,
+      });
+    }
+
     db[model.name] = model;
   });
 
-// run associations if defined
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
+Object.values(db)
+  .filter(m => typeof m.associate === 'function')
+  .forEach(m => m.associate(db));
 
 module.exports = db;
