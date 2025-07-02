@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "admin-adoption-app-popup.html",
     "admin-add-admin-popup.html",
     "deposit-notice-popup.html",
+    "admin-animal-files-popup.html",
   ];
   let loadedPopupsCount = 0;
 

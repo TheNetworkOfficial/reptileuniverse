@@ -2,6 +2,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const tableBody = document.getElementById("clients-table-body");
   let clients = [];
 
+  tableBody.addEventListener("click", (e) => {
+    if (e.target.classList.contains("files-btn")) {
+      e.stopPropagation();
+      const id = e.target.dataset.id;
+      if (window.openFilesPopup) window.openFilesPopup(id);
+    }
+  });
+
   async function loadClients() {
     try {
       const res = await fetch("/api/clients");
@@ -78,9 +86,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!Array.isArray(list) || list.length === 0)
       return "<p>No animals owned.</p>";
     let html =
-      "<table class='owned-table'><thead><tr><th>Name</th><th>Species</th><th>Sex</th><th>Age</th><th>Traits</th></tr></thead><tbody>";
+      "<table class='owned-table'><thead><tr><th>Name</th><th>Species</th><th>Sex</th><th>Age</th><th>Traits</th><th>Files</th></tr></thead><tbody>";
     list.forEach((a) => {
-      html += `<tr><td>${a.name}</td><td>${a.species}</td><td>${a.sex || ""}</td><td>${a.age || ""}</td><td>${a.traits || ""}</td></tr>`;
+      html += `<tr><td>${a.name}</td><td>${a.species}</td><td>${a.sex || ""}</td><td>${a.age || ""}</td><td>${a.traits || ""}</td><td><button class='files-btn btn-option' data-id='${a.id}'>Files</button></td></tr>`;
     });
     html += "</tbody></table>";
     return html;
