@@ -6,7 +6,7 @@ const { sequelize } = require('./src/models');
 
 (async () => {
   try {
-    await sequelize.sync({ alter: true });
+    await sequelize.sync({ force: true });
     console.log('✅ Production database schema updated to match models.');
     process.exit(0);
   } catch (err) {
