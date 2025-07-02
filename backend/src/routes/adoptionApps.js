@@ -94,8 +94,11 @@ router.get("/pending-payment", async (req, res) => {
         where: { reptile_id: reptile.id, status: "approved" },
         order: [["createdAt", "DESC"]],
       });
-      let user = null;
-      if (app) user = await User.findByPk(app.user_id);
+      if (!app) {
+        // Skip reptiles with no approved application
+        continue;
+      }
+      const user = await User.findByPk(app.user_id);
       results.push({ reptile, user });
     }
     res.json(results);

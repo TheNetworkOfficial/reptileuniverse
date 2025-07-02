@@ -124,6 +124,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (form) {
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
+        const statusField = document.getElementById("animal-status");
+        if (statusField && statusField.value !== "for sale") return;
 
         // ———————————————————————————————
         // 5a) Validate file types (PNG/JPG only)
@@ -165,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
         for (const file of imagesInput.files) {
           formData.append("images", file);
         }
-        if (!editingId) formData.append("status", "for sale");
+        if (!editingId && statusField) formData.append("status", statusField.value);
 
         // ———————————————————————————————
         // 5c) Determine POST vs PUT & send
@@ -239,6 +241,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (popupTitleElem) popupTitleElem.textContent = "Add New Animal";
       const form = document.getElementById("add-animal-form");
       if (form) form.reset();
+      const statusField = document.getElementById("animal-status");
+      if (statusField) statusField.value = "for sale";
 
       // Clear any thumbnails from a prior “edit”
       const existingHolder = document.getElementById("existing-images");
@@ -259,6 +263,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("add-animal-form");
     const popup = document.getElementById("animal-popup-container");
     if (form && popup) {
+      const statusField = document.getElementById("animal-status");
+      if (statusField) statusField.value = reptile.status || "for sale";
       document.getElementById("animal-name").value = reptile.name || "";
       document.getElementById("animal-species").value = reptile.species || "";
       document.getElementById("animal-age").value = reptile.age || "";

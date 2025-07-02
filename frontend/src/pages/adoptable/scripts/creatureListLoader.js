@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const imgSrc =
         Array.isArray(animal.image_urls) && animal.image_urls.length > 0
           ? `${window.location.origin}${animal.image_urls[0]}`
-          : "/assets/images/defaultImage.jpg"; // fallback static image
+          : "/assets/images/icons/defaultAvatar.png"; // fallback static image
       tile.innerHTML = `
         <img src="${imgSrc}" alt="${animal.species}" />
         <div class="tile-info">
@@ -42,7 +42,10 @@ document.addEventListener("DOMContentLoaded", () => {
       return res.json();
     })
     .then((data) => {
-      allAnimals = data;
+      // Guard against endpoints that ignore the status filter.
+      allAnimals = Array.isArray(data)
+        ? data.filter((a) => a.status === "adoptable")
+        : [];
       renderAnimals(allAnimals);
     })
     .catch((err) => {

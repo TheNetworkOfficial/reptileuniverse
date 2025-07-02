@@ -5,6 +5,7 @@ const Reptile = require("../models/reptile");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const { Sequelize } = require("sequelize");
 
 // ─── 1) Set up multer storage engine ──────────────────────────────────────────
 const storage = multer.diskStorage({
@@ -43,6 +44,22 @@ router.get("/", async (req, res) => {
     if (req.query.status) where.status = req.query.status;
     const reptiles = await Reptile.findAll({ where });
     res.json(reptiles);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ─── 2b) GET /api/reptiles/species ───────────────────────────────────────────
+router.get("/species", async (req, res) => {
+  try {
+    const results = await Reptile.findAll({
+      attributes: [
+        [Sequelize.fn("DISTINCT", Sequelize.col("species")), "species"],
+      ],
+      order: [["species", "ASC"]],
+    });
+    const species = results.map((r) => r.species);
+    res.json(species);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
