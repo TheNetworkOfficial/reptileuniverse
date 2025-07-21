@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <td>${a.sex || ""}</td>
         <td>${a.age || ""}</td>
         <td>${a.location || ""}</td>
+        <td>${a.price != null ? `$${Number(a.price).toFixed(2)}` : ""}</td>
         <td>${a.traits || ""}</td>
         <td>${a.bio || ""}</td>
         <td>${a.requirements || ""}</td>
@@ -154,6 +155,10 @@ document.addEventListener("DOMContentLoaded", () => {
         formData.append(
           "location",
           document.getElementById("animal-location").value,
+        );
+        formData.append(
+          "price",
+          document.getElementById("animal-price").value,
         );
         formData.append("sex", document.getElementById("animal-sex").value);
         formData.append(
@@ -272,6 +277,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("animal-species").value = reptile.species || "";
       document.getElementById("animal-age").value = reptile.age || "";
       document.getElementById("animal-location").value = reptile.location || "";
+      document.getElementById("animal-price").value = reptile.price || "";
       document.getElementById("animal-sex").value = reptile.sex || "";
       document.getElementById("animal-traits").value = reptile.traits || "";
       document.getElementById("animal-bio").value = reptile.bio || "";

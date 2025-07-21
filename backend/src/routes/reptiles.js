@@ -70,8 +70,17 @@ router.get("/species", async (req, res) => {
 router.post("/", upload.array("images", 5), async (req, res) => {
   try {
     // 3.1) Text fields: found in req.body
-    const { name, species, age, location, sex, traits, bio, requirements } =
-      req.body;
+    const {
+      name,
+      species,
+      age,
+      location,
+      price,
+      sex,
+      traits,
+      bio,
+      requirements,
+    } = req.body;
 
     // 3.2) File uploads: found in req.files (array of file‐info objects)
     // Build an array of URLs that the frontend can use. Because we set up:
@@ -87,6 +96,7 @@ router.post("/", upload.array("images", 5), async (req, res) => {
       species,
       age,
       location,
+      price,
       sex,
       traits,
       bio,
@@ -114,8 +124,17 @@ router.put("/:id", upload.array("images", 5), async (req, res) => {
     }
 
     // 4.1) Gather text fields
-    const { name, species, age, location, sex, traits, bio, requirements } =
-      req.body;
+    const {
+      name,
+      species,
+      age,
+      location,
+      price,
+      sex,
+      traits,
+      bio,
+      requirements,
+    } = req.body;
 
     // ─── New: Parse deleteImages JSON from the form (array of URLs) ────────
     let imageUrls = reptile.image_urls || [];
@@ -158,6 +177,7 @@ router.put("/:id", upload.array("images", 5), async (req, res) => {
       species,
       age,
       location,
+      price,
       sex,
       traits,
       bio,

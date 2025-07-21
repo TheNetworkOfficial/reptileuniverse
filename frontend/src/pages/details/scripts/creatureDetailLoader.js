@@ -32,6 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="info-item"><strong>Age:</strong> ${animal.age || "N/A"}</div>
           </div>
           <h3><strong>Location:</strong> ${animal.location || "N/A"}</h3>
+          <h3><strong>Price:</strong> ${
+            animal.price != null ? `$${Number(animal.price).toFixed(2)}` : "N/A"
+          }</h3>
           <h4>
             <strong>
               ${animal.sex || ""}${animal.sex && animal.traits ? " • " : ""}

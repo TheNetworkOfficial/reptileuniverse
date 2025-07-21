@@ -10,6 +10,7 @@ Reptile.init(
     species: { type: DataTypes.STRING, allowNull: false },
     age: { type: DataTypes.INTEGER, allowNull: false },
     location: { type: DataTypes.STRING },
+    price: { type: DataTypes.DECIMAL(10, 2) },
     sex: { type: DataTypes.STRING },
     traits: { type: DataTypes.STRING },
     bio: { type: DataTypes.TEXT },
