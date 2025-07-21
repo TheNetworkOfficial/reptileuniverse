@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function loadForms() {
     try {
-      const res = await fetch("/api/surrenders?formStatus=pending");
+      const res = await fetch("/api/surrenders");
       forms = res.ok ? await res.json() : [];
       render();
     } catch (err) {
@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <td>${f.id}</td>
         <td>${f.animalName || ""}</td>
         <td>${f.printedName || ""}</td>
+        <td>${f.formStatus}</td>
         <td><button class="view-form-btn btn-option">View</button></td>`;
       tableBody.appendChild(tr);
     });
@@ -59,6 +60,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     html += "</table>";
     detailsElem.innerHTML = html;
+    if (approveBtn && denyBtn) {
+      const disabled = form.formStatus !== "pending";
+      approveBtn.disabled = disabled;
+      denyBtn.disabled = disabled;
+    }
     popup.style.display = "flex";
   }
 

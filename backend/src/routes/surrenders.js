@@ -2,6 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const Surrender = require("../models/surrender");
+const Reptile = require("../models/reptile");
 
 // POST /api/surrenders
 router.post("/", async (req, res) => {
@@ -44,6 +45,23 @@ router.put("/:id/status", async (req, res) => {
     }
     const form = await Surrender.findByPk(req.params.id);
     if (!form) return res.status(404).json({ error: "Form not found" });
+
+    if (status === "approved") {
+      try {
+        const age = parseInt(form.age, 10);
+        await Reptile.create({
+          name: form.animalName,
+          species: form.typeOfAnimal,
+          age: Number.isNaN(age) ? 0 : age,
+          sex: form.gender,
+          traits: form.additionalNotes || null,
+          status: "adoptable",
+        });
+      } catch (err) {
+        console.error("Error creating reptile from surrender:", err);
+      }
+    }
+
     await form.update({ formStatus: status });
     res.json(form);
   } catch (err) {
