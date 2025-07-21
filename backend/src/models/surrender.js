@@ -18,7 +18,6 @@ const Surrender = sequelize.define('surrender', {
   reasonForSurrender:     { type: DataTypes.TEXT    },
   healthIssues:           { type: DataTypes.TEXT    },
   additionalNotes:        { type: DataTypes.TEXT    },
-  printedName:            { type: DataTypes.STRING,  allowNull: false },
   signature:              { type: DataTypes.STRING,  allowNull: false },
   date:                   { type: DataTypes.DATEONLY,allowNull: false },
   // New column, defaults to “No” (false)

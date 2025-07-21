@@ -4,3 +4,4 @@ import "./css/surrenderForm.css";
 // Importing JavaScript files
 import "./scripts/formWizard.js";
 import "./scripts/adoptionFormLoader.js";
+import "./scripts/submitSurrenderForm.js";
