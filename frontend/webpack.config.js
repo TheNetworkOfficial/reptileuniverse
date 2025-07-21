@@ -187,6 +187,10 @@ module.exports = {
       template: "./src/pages/popups/deposit-notice-popup.html",
       filename: "deposit-notice-popup.html",
     }),
+    new HtmlWebpackPlugin({
+      template: "./src/pages/popups/admin-surrender-form-popup.html",
+      filename: "admin-surrender-form-popup.html",
+    }),
   ],
   devServer: {
     proxy: [

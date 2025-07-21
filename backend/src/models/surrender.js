@@ -22,7 +22,18 @@ const Surrender = sequelize.define('surrender', {
   signature:              { type: DataTypes.STRING,  allowNull: false },
   date:                   { type: DataTypes.DATEONLY,allowNull: false },
   // New column, defaults to “No” (false)
-  initialHealthInspection:{ type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
+  initialHealthInspection: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
+  // Status for admin approval
+  formStatus: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: "pending",
+    validate: { isIn: [["approved", "pending", "rejected"]] },
+  },
 });
 
 module.exports = Surrender;

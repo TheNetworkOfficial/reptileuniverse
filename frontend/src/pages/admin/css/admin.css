@@ -83,6 +83,16 @@
   text-align: left;
 }
 
+#surrender-forms table {
+  width: 100%;
+  border-collapse: collapse;
+}
+#surrender-forms th,
+#surrender-forms td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
 
 /* Pending-apps sortable columns */
 #pending-apps table th[data-sort] {
