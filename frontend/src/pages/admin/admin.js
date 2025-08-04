@@ -9,5 +9,6 @@ import "./scripts/pendingAdoptionsTab.js";
 import "./scripts/pendingPaymentsTab.js";
 import "./scripts/clientsTab.js";
 import "./scripts/filesPopup.js";
+import "./scripts/imagesPopup.js";
 import "./scripts/surrenderFormsTab.js";
 import "../../scripts/ensureAdmin.js";

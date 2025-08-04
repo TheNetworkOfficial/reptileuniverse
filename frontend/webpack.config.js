@@ -191,6 +191,10 @@ module.exports = {
       template: "./src/pages/popups/admin-surrender-form-popup.html",
       filename: "admin-surrender-form-popup.html",
     }),
+    new HtmlWebpackPlugin({
+      template: "./src/pages/popups/admin-animal-images-popup.html",
+      filename: "admin-animal-images-popup.html",
+    }),
   ],
   devServer: {
     proxy: [

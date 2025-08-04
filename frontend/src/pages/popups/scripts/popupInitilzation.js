@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "admin-add-admin-popup.html",
     "deposit-notice-popup.html",
     "admin-animal-files-popup.html",
+    "admin-animal-images-popup.html",
     "admin-surrender-form-popup.html",
   ];
   let loadedPopupsCount = 0;
@@ -76,6 +77,10 @@ document.addEventListener("DOMContentLoaded", () => {
       {
         popupId: "animal-files-popup-container",
         triggerSelector: ".animal-files-btn",
+      },
+      {
+        popupId: "admin-animal-images-popup-container",
+        triggerSelector: "images-btn",
       },
       {
         popupId: "surrender-form-popup-container",
