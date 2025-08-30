@@ -17,11 +17,18 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (e.target.classList.contains("health-btn")) {
       e.stopPropagation();
       const id = e.target.dataset.id;
-      openInspectionPopup(id);
+      console.log("[HI][open] Client tab requested inspections for reptile", id);
+      if (window.openInspectionPopup) window.openInspectionPopup(id);
     }
   });
 
   document.addEventListener("popupsLoaded", () => {
+    // If health inspections popup is already initialized by another tab,
+    // skip wiring duplicate listeners here.
+    if (window.openInspectionPopup) {
+      console.log("[HI][bind] Skipping clientsTab; popup already initialized.");
+      return;
+    }
     inspectionPopup = document.getElementById("inspection-popup-container");
     inspectionList = document.getElementById("inspection-popup-list");
     if (inspectionList) {
@@ -157,12 +164,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function openInspectionPopup(id) {
-    if (!inspectionPopup) return;
-    inspectionPopup.dataset.reptileId = id;
-    loadInspectionList(id);
-    inspectionPopup.style.display = "flex";
-  }
+  // Removed local openInspectionPopup; use window.openInspectionPopup instead.
+
+  // Keep a lightweight reference so ESLint doesn't flag it as unused
+  // after delegating to the global popup implementation.
+  void loadInspectionList;
 
   loadClients();
 });

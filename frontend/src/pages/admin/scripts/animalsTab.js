@@ -109,7 +109,9 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (e.target.classList.contains("delete-btn")) {
       deleteAnimal(id);
     } else if (e.target.classList.contains("inspection-cell")) {
-      openInspectionPopup(id);
+      console.log("[HI][open] Animals tab requested inspections for reptile", id);
+      if (window.openInspectionPopup) window.openInspectionPopup(id);
+      else openInspectionPopup(id);
     } else if (e.target.classList.contains("files-btn")) {
       if (window.openFilesPopup) window.openFilesPopup(id);
     }
@@ -119,6 +121,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // 5) Once popups are injected (by popupInitilzation.js), wire up the form
   // ———————————————————————————————————————————————————————
   document.addEventListener("popupsLoaded", () => {
+    // Bind-once guard so only one tab wires the popup
+    if (document.body.dataset.healthPopupInit === "1") {
+      console.log("[HI][bind] Skipping animalsTab; popup already initialized.");
+      return;
+    }
+    document.body.dataset.healthPopupInit = "1";
+    console.log("[HI][bind] animalsTab initializing Health Inspections popup listeners.");
     const form = document.getElementById("add-animal-form");
     const cancelBtn = document.getElementById("cancel-add-animal");
     const popup = document.getElementById("animal-popup-container");
@@ -345,6 +354,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Grab form + cancel
+    let isSavingInspection = false;
     const inspectionForm = document.getElementById("inspection-form");
     const cancelInspectionBtn = document.getElementById(
       "cancel-inspection-btn",
@@ -353,6 +363,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // “Create New” → show form
     if (createInspectionBtn && inspectionForm) {
       createInspectionBtn.addEventListener("click", () => {
+        console.log("[HI][ui] Create New inspection clicked.");
         inspectionList.style.display = "none";
         createInspectionBtn.style.display = "none";
         inspectionForm.style.display = "block";
@@ -362,6 +373,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // “Cancel” → hide form, show list
     if (cancelInspectionBtn && inspectionForm) {
       cancelInspectionBtn.addEventListener("click", () => {
+        console.log("[HI][ui] Cancel inspection creation.");
         inspectionForm.reset();
         inspectionForm.style.display = "none";
         inspectionList.style.display = "block";
@@ -373,22 +385,40 @@ document.addEventListener("DOMContentLoaded", () => {
     if (inspectionForm) {
       inspectionForm.addEventListener("submit", async (e) => {
         e.preventDefault();
+        if (isSavingInspection) {
+          console.log("[HI][submit] Ignored duplicate submit (already saving).");
+          return;
+        }
+        isSavingInspection = true;
+        const saveBtn = document.getElementById("save-inspection-btn");
+        if (saveBtn) saveBtn.disabled = true;
         const rid = inspectionPopup.dataset.reptileId;
-        if (!rid) return;
+        if (!rid) {
+          console.warn("[HI][submit] No reptileId on popup; aborting save.");
+          return;
+        }
         const fd = new FormData(inspectionForm);
         const payload = { reptile_id: rid };
         for (const [k, v] of fd.entries()) payload[k] = v;
-        await fetch("/api/health-inspections", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-        inspectionForm.reset();
-        inspectionForm.style.display = "none";
-        inspectionList.style.display = "block";
-        createInspectionBtn.style.display = "inline-block";
-        loadInspectionList(rid);
-        loadAnimals();
+        try {
+          console.log("[HI][submit] POST /api/health-inspections", payload);
+          await fetch("/api/health-inspections", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          console.log("[HI][submit] Save succeeded for reptile", rid);
+          inspectionForm.reset();
+          inspectionForm.style.display = "none";
+          inspectionList.style.display = "block";
+          createInspectionBtn.style.display = "inline-block";
+          loadInspectionList(rid);
+          loadAnimals();
+        } finally {
+          isSavingInspection = false;
+          const saveBtn2 = document.getElementById("save-inspection-btn");
+          if (saveBtn2) saveBtn2.disabled = false;
+        }
       });
     }
 
@@ -400,11 +430,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const iid = tr.dataset.id;
         if (e.target.matches(".delete-inspection")) {
           if (!confirm("Delete this report?")) return;
+          console.log("[HI][delete] DELETE /api/health-inspections/" + iid);
           await fetch(`/api/health-inspections/${iid}`, { method: "DELETE" });
+          console.log("[HI][delete] Delete completed for id", iid);
           loadInspectionList(inspectionPopup.dataset.reptileId);
         } else if (e.target.matches(".download-inspection")) {
+          console.log("[HI][download] Request PDF for inspection", iid);
           window.open(`/api/health-inspections/${iid}/pdf`, "_blank");
         } else if (e.target.matches(".view-inspection")) {
+          console.log("[HI][view] View inspection", iid);
           const all = await (
             await fetch(
               `/api/health-inspections/${inspectionPopup.dataset.reptileId}`,
@@ -421,6 +455,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Render & manage inspection list + popup
   // ———————————————————————————————
   async function loadInspectionList(reptileId) {
+    console.log("[HI][list] Load inspections for reptile", reptileId);
     if (!inspectionList) return;
     inspectionList.innerHTML = "Loading…";
     try {
@@ -452,11 +487,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function openInspectionPopup(id) {
+    console.log("[HI][open] Open inspections popup for reptile", id);
     if (!inspectionPopup) return;
     inspectionPopup.dataset.reptileId = id;
     loadInspectionList(id);
     inspectionPopup.style.display = "flex";
   }
+
+  // Expose a single global opener so other tabs reuse the same popup
+  // and do not register duplicate handlers.
+  window.openInspectionPopup = openInspectionPopup;
 
   // ———————————————————————————————
   // 9) Delete an animal

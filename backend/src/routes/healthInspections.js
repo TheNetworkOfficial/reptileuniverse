@@ -9,6 +9,7 @@ const Reptile = require("../models/reptile");
 // GET /api/health-inspections/:reptileId
 // ——————————————————————————————
 router.get("/:reptileId", async (req, res) => {
+  console.log("[HI][API][GET list] reptileId=", req.params.reptileId);
   try {
     const inspections = await HealthInspection.findAll({
       where: { reptile_id: req.params.reptileId },
@@ -25,6 +26,7 @@ router.get("/:reptileId", async (req, res) => {
 // (REPLACE your old handler with this one)
 // ——————————————————————————————
 router.post("/", async (req, res) => {
+  console.log("[HI][API][POST] body=", req.body);
   try {
     // pull every field out of the request body
     const {
@@ -80,6 +82,7 @@ router.post("/", async (req, res) => {
       notes,
     });
 
+    console.log("[HI][API][POST] created id=", newInspection.id);
     res.status(201).json(newInspection);
   } catch (err) {
     console.error("Create failed:", err);
@@ -91,6 +94,7 @@ router.post("/", async (req, res) => {
 // DELETE /api/health-inspections/:id
 // ——————————————————————————————
 router.delete("/:id", async (req, res) => {
+  console.log("[HI][API][DELETE] id=", req.params.id);
   try {
     const count = await HealthInspection.destroy({
       where: { id: req.params.id },
@@ -106,6 +110,7 @@ router.delete("/:id", async (req, res) => {
 // GET /api/health-inspections/:id/pdf
 // ——————————————————————————————
 router.get("/:id/pdf", async (req, res) => {
+  console.log("[HI][API][PDF] id=", req.params.id);
   // fetch the inspection record
   const ins = await HealthInspection.findByPk(req.params.id);
   if (!ins) return res.status(404).send("Not found");
