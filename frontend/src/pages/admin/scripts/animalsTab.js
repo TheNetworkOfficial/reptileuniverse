@@ -381,7 +381,102 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // “Save” → POST, then reload list & table
+    // helper: clear invalid styles when user edits inputs
+    if (inspectionForm) {
+      const clearHandler = (ev) => {
+        const t = ev.target;
+        if (!(t instanceof HTMLElement)) return;
+        t.classList.remove("invalid");
+        const fs = t.closest("fieldset");
+        if (fs) fs.classList.remove("invalid");
+        const lb = t.closest("label");
+        if (lb) lb.classList.remove("invalid");
+      };
+      inspectionForm.addEventListener("input", clearHandler);
+      inspectionForm.addEventListener("change", clearHandler);
+    }
+
+    function validateInspectionForm(formEl) {
+      // remove any previous highlights
+      formEl.querySelectorAll(".invalid").forEach((el) => el.classList.remove("invalid"));
+      let firstFocus = null;
+
+      function markInvalid(container) {
+        if (!container) return;
+        container.classList.add("invalid");
+        const focusEl = container.querySelector("input, select, textarea") || container;
+        if (!firstFocus && focusEl && focusEl.focus) firstFocus = focusEl;
+      }
+
+      function requireRadio(name) {
+        const checked = formEl.querySelector(`input[name="${name}"]:checked`);
+        if (checked) return true;
+        const any = formEl.querySelector(`input[name="${name}"]`);
+        const container = any?.closest("fieldset") || any?.closest("label") || any?.parentElement;
+        markInvalid(container || any);
+        return false;
+      }
+
+      function requireText(name) {
+        const el = formEl.querySelector(`[name="${name}"]`);
+        if (!el) return true; // not present
+        const val = (el.value || "").trim();
+        if (val.length > 0) return true;
+        el.classList.add("invalid");
+        if (!firstFocus && el.focus) firstFocus = el;
+        return false;
+      }
+
+      function requireTextIf(name, predicate) {
+        if (!predicate()) return true;
+        return requireText(name);
+      }
+
+      function requireSelect(name) {
+        const el = formEl.querySelector(`select[name="${name}"]`);
+        if (!el) return true;
+        const val = el.value;
+        if (val === undefined || val === null || String(val).trim() === "") {
+          el.classList.add("invalid");
+          if (!firstFocus && el.focus) firstFocus = el;
+          return false;
+        }
+        return true;
+      }
+
+      let ok = true;
+      ok = requireRadio("hold72") && ok;
+      ok = requireRadio("weight") && ok;
+      ok = requireRadio("posture") && ok;
+      ok = requireSelect("hydration") && ok;
+      ok = requireSelect("energy") && ok;
+      ok = requireSelect("vent") && ok;
+      ok = requireSelect("eyes") && ok;
+      ok = requireSelect("nostrils") && ok;
+      ok = requireRadio("toes") && ok;
+      ok = requireRadio("nails") && ok;
+      ok = requireRadio("tail") && ok;
+      ok = requireRadio("blemish") && ok;
+      ok = requireRadio("kinks") && ok;
+      ok = requireRadio("shed") && ok;
+      ok = requireRadio("parasites") && ok;
+
+      ok = requireTextIf("postureExplain", () => formEl.querySelector('input[name="posture"]:checked')?.value === "poor") && ok;
+      ok = requireTextIf("blemishExplain", () => formEl.querySelector('input[name="blemish"]:checked')?.value === "yes") && ok;
+      ok = requireTextIf("kinksExplain", () => formEl.querySelector('input[name="kinks"]:checked')?.value === "yes") && ok;
+      ok = requireTextIf("shedExplain", () => formEl.querySelector('input[name="shed"]:checked')?.value === "yes") && ok;
+      ok = requireTextIf("parasitesExplain", () => formEl.querySelector('input[name="parasites"]:checked')?.value === "yes") && ok;
+
+      ok = requireText("notes") && ok;
+
+      if (!ok && firstFocus) {
+        firstFocus.scrollIntoView({ behavior: "smooth", block: "center" });
+        firstFocus.focus();
+      }
+      return ok;
+    }
+
+    // “Save” → validate, POST, then reload list & table
     if (inspectionForm) {
       inspectionForm.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -389,12 +484,21 @@ document.addEventListener("DOMContentLoaded", () => {
           console.log("[HI][submit] Ignored duplicate submit (already saving).");
           return;
         }
-        isSavingInspection = true;
         const saveBtn = document.getElementById("save-inspection-btn");
         if (saveBtn) saveBtn.disabled = true;
+
+        // Validate required fields
+        if (!validateInspectionForm(inspectionForm)) {
+          if (saveBtn) saveBtn.disabled = false;
+          return; // do not submit
+        }
+
+        isSavingInspection = true;
         const rid = inspectionPopup.dataset.reptileId;
         if (!rid) {
           console.warn("[HI][submit] No reptileId on popup; aborting save.");
+          isSavingInspection = false;
+          if (saveBtn) saveBtn.disabled = false;
           return;
         }
         const fd = new FormData(inspectionForm);

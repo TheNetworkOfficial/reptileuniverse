@@ -25,7 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
         <td>${f.animalName || ""}</td>
         <td>${f.printedName || ""}</td>
         <td>${f.formStatus}</td>
-        <td><button class="view-form-btn btn-option">View</button></td>`;
+        <td><button class="view-form-btn btn-option">View</button></td>
+        <td><button class="delete-form-btn btn-option">Delete</button></td>`;
       tableBody.appendChild(tr);
     });
   }
@@ -46,6 +47,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target.classList.contains("view-form-btn")) {
       const tr = e.target.closest("tr");
       if (tr) openPopup(tr.dataset.id);
+    } else if (e.target.classList.contains("delete-form-btn")) {
+      const tr = e.target.closest("tr");
+      if (tr) deleteForm(tr.dataset.id);
     }
   });
 
@@ -82,6 +86,25 @@ document.addEventListener("DOMContentLoaded", () => {
         loadForms();
       } else {
         console.error("Failed to update status", res.status);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function deleteForm(id) {
+    if (!id) return;
+    if (!confirm("Are you sure you want to delete this surrender form?")) return;
+    try {
+      const res = await fetch(`/api/surrenders/${id}`, { method: "DELETE" });
+      if (res.ok || res.status === 204) {
+        // If the popup is open for this form, close it
+        if (popup && popup.dataset.id === String(id)) {
+          popup.style.display = "none";
+        }
+        loadForms();
+      } else {
+        console.error("Failed to delete surrender form:", res.status);
       }
     } catch (err) {
       console.error(err);

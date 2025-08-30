@@ -1,0 +1,978 @@
+@import url(https://fonts.googleapis.com/css2?family=Gideon+Roman&display=swap);
+/* normalize.css */
+html {
+  box-sizing: border-box;
+  font-size: 16px; /* Set default font size to 16px */
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ol,
+ul {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+button:focus {
+  outline: none;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none; /* for Chrome, Safari */
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* for Firefox */
+}
+
+/* Global font and color themes */
+:root {
+  --font-family: Arial, sans-serif;
+  --background-color-main: #121212;
+  --text-color-main: white;
+  --container-background: #16213e;
+  --button-background: #0f3460;
+  --button-hover-background: #5b92e5;
+  --border-radius: 5px;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--background-color-main);
+  color: var(--text-color-main);
+}
+
+:root {
+  --font-family: "Gideon Roman", serif;
+  --background-color-main: #121212;
+  --background-color-alternate: #5b92e5;
+  --text-color-main: white;
+  --text-color-alternate: #5b92e5;
+  --container-background: #16213e;
+  --button-background: #0f3460;
+  --button-hover-background: #5b92e5;
+  --border-radius: 5px;
+  --header-footer-background: #333;
+  --main-padding: 20px;
+  --header-padding: 0.5rem 1rem;
+  --header-height: 60px;
+  --header-left-padding: 150px;
+  --link-hover-decoration: underline;
+  --icon-size: 20px;
+  --logo-size: 80px;
+  --logo-font-size: 2.5rem;
+  --logo-font-color: #5b92e5;
+  --underline-height: 1px;
+  --underline-width: 150px;
+  --underline-color: #5b92e5;
+  --info-block-min-width: 18vw;
+  --info-block-max-width: 22vw;
+  --info-block-min-height: 8vw;
+  --info-icon-size: 50px;
+  --heading-color: #5b92e5;
+  --paragraph-line-height: 1.6;
+  --button-padding: 10px 20px;
+  --button-font-size: 16px;
+  --input-width: 50px;
+  --input-padding: 10px;
+  --carousel-max-width: 500px;
+  --carousel-width: 80vw;
+  --thumbnail-size: 15%;
+  --video-section-margin: 10px 50px;
+  --video-height: calc(60vh - 50px);
+  --italic-heading-color: #ffffff;
+  --list-indent: 20px;
+  --list-item-spacing: 10px;
+  --fade-in-animation: fadeIn 2s;
+}
+
+html,
+body {
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding-top: 120px;
+  font-family: var(--font-family);
+  background-color: var(--background-color-main);
+  color: var(--text-color-main);
+  min-height: 100vh;
+}
+
+main {
+  flex: 1; /* Allows main to grow and take available space */
+  display: flex;
+  flex-direction: column;
+}
+
+#header-placeholder {
+  flex-shrink: 0;
+  margin-bottom: auto; /* Push footer to bottom even if content is short */
+}
+
+#footer-placeholder {
+  flex-shrink: 0;
+  margin-top: auto; /* Push footer to bottom even if content is short */
+}
+/* Paragraph styles */
+h1,
+h2,
+h3,
+p {
+  font-family: var(--font-family);
+  color: var(--text-color-main);
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5em;
+}
+
+h3 {
+  font-size: 1.375rem;
+  margin-top: 1.5rem;
+}
+
+h4 {
+  font-size: 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+p {
+  font-size: 0.9rem;
+  padding-bottom: 1rem;
+}
+
+/* Universal Button Styles */
+.btn, button.btn, a.btn {
+    font-family: var(--font-family);
+    font-weight: 600;
+    background-color: #ff6f61;
+    color: #fff;
+    padding: 15px 30px;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn:hover, button.btn:hover, a.btn:hover {
+    background-color: #ff5a4d;
+}
+
+/* Specific Styles for Back and Next Buttons */
+.btn-back, .btn-next {
+    display: inline-block; /* Ensure consistency */
+}
+
+/* Additional button states if needed */
+/* .btn:disabled { ... } */
+
+/* Header styles */
+/* Navbar Styles */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #1f1f1f;
+}
+
+.logo-wrapper {
+  margin-left: 4rem;
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto; /* Do not grow, do not shrink, and base size on the content */
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none; /* Removes underline from link */
+  color: inherit; /* Inherits the color from the parent element */
+}
+
+.logo-image {
+  height: 80px;
+  width: 80px;
+  border-radius: 50%; /* Makes it circular */
+  object-fit: cover; /* Ensures the image covers the area without stretching */
+}
+
+.logo-title {
+  margin-left: 1rem;
+  font-size: 3rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center; /* Centers text vertically */
+}
+
+.nav-and-toolkit {
+  display: flex;
+  align-items: center;
+}
+
+.navigation {
+  margin-right: 4rem;
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+.navigation li {
+  margin-left: 20px;
+  font-size: 1.25rem;
+  position: relative;
+}
+
+.navigation a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  display: flex; /* Make the entire link block interactable */
+  align-items: center; /* Center the caret icon and text */
+  padding: 10px; /* Add padding to expand hover area */
+}
+
+.btn-login {
+  background-color: #ff6f61;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.btn-login:hover {
+  background-color: #ff5a4d;
+}
+
+/* profile avatar */
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+/* align the profile dropdown menu to the right */
+.profile-dropdown .dropdown-content {
+  left: auto;
+  right: 0;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%; /* Ensure dropdown appears below the dropdown trigger */
+  left: 0;
+  background-color: #2c2c2c;
+  padding: 10px;
+  border-radius: 5px;
+  min-width: 200px; /* Ensure dropdown content is wide enough */
+}
+
+.dropdown-content li {
+  margin: 0;
+}
+
+.dropdown-content a {
+  color: #fff;
+  display: block;
+  padding: 5px 10px;
+}
+
+.dropdown-content a:hover {
+  background-color: #1f1f1f;
+}
+
+/* Mobile Menu Toggle Styles */
+ .mobile-menu-toggle {
+   display: none; /* Assuming it will be visible only on mobile with further media query */
+ }
+
+/* Extra-small devices (max-width: 575.98px) */
+@media (max-width: 575.98px) {
+  .site-header {
+    position: relative;
+    padding: 10px 10px;
+    flex-wrap: wrap;
+  }
+  .logo-wrapper {
+    margin-left: 3rem;
+  }
+  .logo-image {
+    height: 50px;
+    width: 50px;
+  }
+  .logo-title {
+    font-size: 1.5rem;
+    margin-left: 0.5rem;
+  }
+  .navigation {
+    display: none;
+  }
+  .mobile-menu-toggle {
+    display: block;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+}
+
+/* Small devices (576px – 767.98px) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .site-header {
+    position: relative;
+    padding: 10px 15px;
+    flex-wrap: wrap;
+  }
+  .logo-wrapper {
+    margin-left: 3rem;
+  }
+  .logo-image {
+    height: 60px;
+    width: 60px;
+  }
+  .logo-title {
+    font-size: 2rem;
+    margin-left: 0.75rem;
+  }
+  .navigation {
+    display: none;
+  }
+  .mobile-menu-toggle {
+    display: block;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.75rem;
+    cursor: pointer;
+  }
+}
+
+/* Tablets (768px – 991.98px) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .site-header {
+    padding: 15px 20px;
+    flex-wrap: nowrap;
+  }
+  .logo-wrapper {
+    margin-left: 2rem;
+  }
+  .logo-image {
+    height: 70px;
+    width: 70px;
+  }
+  .logo-title {
+    font-size: 2.5rem;
+    margin-left: 1rem;
+  }
+  .navigation {
+    display: flex;
+    margin-right: 2rem;
+  }
+  .mobile-menu-toggle {
+    display: none;
+  }
+}
+
+/* Mobile Menu Container */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 250px;
+  height: 100%;
+  background-color: #1f1f1f;
+  z-index: 1100;
+  transition: left 0.3s ease;
+  overflow-y: auto;
+}
+
+.mobile-menu.open {
+  left: 0;
+}
+
+.mobile-menu-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.mobile-menu-close {
+  text-align: right;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #fff;  
+  margin-bottom: 20px;
+}
+
+.mobile-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.mobile-menu li {
+  margin-bottom: 20px;
+}
+
+.mobile-menu li a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.2rem;
+}
+
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1050;
+  display: none;
+}
+
+body.mobile-menu-open .mobile-menu-overlay {
+  display: block;
+}
+/* Footer Styles */
+.site-footer {
+  flex-shrink: 0; /* Ensures footer stays at the bottom */
+  margin-top: auto; /* Pushes the footer to the bottom when there's extra space */
+  background-color: #141414;
+  color: white;
+  padding-top: 1rem;
+  width: 100%;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 50px;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding: 20px;
+  background-color: #141414;
+}
+
+.footer-about, .footer-links, .footer-contact {
+  max-width: 30%;
+  margin-bottom: 20px;
+}
+
+.footer-about p, .footer-contact p {
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0; /* Remove default list padding */
+}
+
+.footer-links ul li {
+  margin-bottom: 10px;
+}
+
+.footer-links ul li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.footer-links ul li a:hover {
+  text-decoration: underline;
+}
+
+.footer-contact h4 {
+  font-size: 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0rem;
+}
+
+.footer-contact a {
+  font-size: 1rem;
+  color: #fff;
+}
+
+.social-media {
+  margin-top: 20px;
+}
+
+.social-media a {
+  color: #fff;
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.social-icons {
+  text-align: center;
+  margin-bottom: 1rem; /* Adds space below the icon links */
+  width: 100%;
+}
+
+.social-icons a {
+  color: white; /* Sets the icon color */
+  margin: 0 10px; /* Adds space between icon links */
+  font-size: 1.5rem; /* Sets the size of the icons */
+  display: inline-block; /* Aligns icons in line */
+}
+
+.social-icons a:hover,
+.social-icons a:focus {
+  color: #5b92e5; /* Change color on hover/focus for visual feedback */
+  text-decoration: none; /* Removes underline from links */
+}
+
+
+/* Extra Small Devices (e.g., ~412px width, less than 576px) */
+@media (max-width: 575.98px) {
+  .footer-content {
+    display: none;
+  }
+  .footer-extra {
+    display: none;
+  }
+  .footer-about,
+  .footer-links,
+  .footer-contact {
+    max-width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .footer-about p,
+  .footer-contact p {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  .footer-links ul li {
+    margin-bottom: 8px;
+  }
+  .footer-links ul li a {
+    font-size: 14px;
+  }
+  .social-media a {
+    font-size: 18px;
+    margin-right: 8px;
+  }
+}
+/* Normalize CSS */
+
+/* Google Font Import */
+
+/* Modular CSS Files */
+
+/* Universal Styles */
+
+.universal-container {
+  background-color: var(--container-background);
+  padding: 20px; /* A common padding, adjust based on your design */
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* A moderate shadow for depth */
+  margin: auto; /* Center the container */
+  box-sizing: border-box; /* Include padding in the container's total width */
+}
+
+/* Tab Styles */
+.tab-button {
+  background: none;
+  border: none;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: var(--heading-color);
+  text-align: left;
+  border-left: 4px solid transparent;
+  margin-bottom: 2px;
+  transition:
+    background-color 0.3s,
+    border-left 0.3s;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 150px;
+  box-sizing: border-box;
+}
+
+.tab-button:not(:last-child) {
+  border-bottom: 1px solid #ffffff30; /* Specific color for this section */
+}
+
+.tab-button:hover,
+.tab-button.active {
+  background-color: var(--container-background);
+  border-left: 4px solid var(--heading-color);
+}
+
+.tab-button.active {
+  color: var(--text-color-main);
+  background: rgba(255, 255, 255, 0.2);
+  border-left: 4px solid var(--heading-color);
+  margin-left: -4px; /* Specific margin for this section */
+}
+/* Popup Container */
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none; /* Hidden by default */
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+  z-index: 1000; /* Ensure it's above other content */
+}
+
+/* Popup Content */
+.popup-content {
+  background-color: #1f1f1f; /* Light background to match your site */
+  padding: 30px;
+  border-radius: 10px;
+  width: 80%;
+  max-height: 90vh;
+  overflow-y: auto;
+  max-width: 800px;
+  text-align: center;
+  position: relative;
+}
+
+/* Close Button */
+.popup-content .close-button {
+  position: absolute;
+  top: 0px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 40px;
+  cursor: pointer;
+  color: #ffffff;
+}
+
+/* Popup Heading */
+.popup-content h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.popup-content h3 {
+  font-weight: 600;
+}
+
+/* Style for the images in the popup options */
+.option-image {
+  width: 40%; /* Adjusts the width to 80% of the container */
+  height: auto; /* Maintains aspect ratio */
+  border-radius: 50% / 25%; /* Creates the oval shape */
+  margin-bottom: 15px;
+  object-fit: contain; /* Ensures the entire image is visible */
+  display: block; /* Centers the image horizontally */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.popup-content p {
+  font-size: 20px;
+}
+
+/* Popup Options */
+.popup-options {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* Option Styles */
+.popup-options .option {
+  flex: 1;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Option Content */
+.option-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Option Headings */
+.popup-options .option h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: #333;
+  text-align: center;
+}
+
+/* Option Paragraphs */
+.popup-options .option p {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #666;
+  text-align: center;
+}
+
+/* Option Buttons */
+.btn-option {
+  display: inline-block;
+  background-color: #ff6f61;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  margin-top: auto;
+  align-self: center;
+}
+
+.popup-options .btn-option:hover {
+  background-color: #ff5a4d;
+}
+
+.file-item {
+  display: inline-block;
+  margin: 5px;
+  text-align: center;
+}
+
+.file-thumb {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  cursor: pointer;
+  display: block;
+  margin-bottom: 3px;
+}
+
+/* Form Styles for Admin Popups */
+.popup-content form {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 15px;
+  margin-top: 1em;
+}
+
+.popup-content label {
+  color: #f9f9f9;
+  font-weight: 500;
+}
+
+.popup-content input,
+.popup-content textarea,
+.popup-content select {
+  padding: 10px;
+  border: 1px solid #555;
+  border-radius: 5px;
+  background-color: #2b2b2b;
+  color: #f9f9f9;
+}
+
+.popup-content input[type="radio"],
+.popup-content input[type="checkbox"] {
+  width: auto;
+  margin-right: 5px;
+}
+
+.popup-content fieldset {
+  border: 1px solid #444;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.popup-content legend {
+  color: #f9f9f9;
+  font-weight: 600;
+}
+
+/* Validation highlighting */
+.popup-content input.invalid,
+.popup-content select.invalid,
+.popup-content textarea.invalid {
+  border-color: #e74c3c !important;
+  box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.3);
+}
+
+.popup-content fieldset.invalid {
+  border-color: #e74c3c !important;
+  box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
+}
+
+.popup-content label.invalid {
+  outline: 2px solid #e74c3c;
+  border-radius: 5px;
+  padding: 6px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+  margin-top: 1em;
+}
+
+#inspection-form {
+  display: none;
+}
+
+#files-list {
+  margin-bottom: 1em;
+}
+
+/* ===== Health Inspections form: modern, aligned layout (scoped) ===== */
+/* Scope everything to #inspection-form so other popups remain unchanged */
+#inspection-form {
+  /* column width for label text on wide screens */
+  --hi-label-col: 220px;
+}
+
+/* remove manual line-breaks so layout spacing is consistent */
+#inspection-form br { display: none; }
+
+/* Base rows: label text on left, control(s) on the right */
+#inspection-form > label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Push the main control to the right side and give it a clean width cap */
+#inspection-form > label > select,
+#inspection-form > label > textarea,
+#inspection-form > label > input:not([type="radio"]):not([type="checkbox"]) {
+  margin-left: auto;
+  width: min(420px, 100%);
+}
+
+/* Inline radio/checkbox groups inside a label */
+#inspection-form > label > label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 8px; /* space between Yes/No, etc. */
+}
+
+/* Explanation fields that sit after a Yes/No question — align with right column */
+#inspection-form > input[name$="Explain"] {
+  width: min(420px, 100%);
+}
+
+/* Fieldsets: title on the left, options neatly on the right */
+#inspection-form fieldset {
+  display: grid;
+  grid-template-columns: var(--hi-label-col) 1fr;
+  gap: 8px 16px;
+  align-items: center;
+}
+
+#inspection-form fieldset legend {
+  grid-column: 1;
+  margin: 0;
+  line-height: 1.1;
+}
+
+#inspection-form fieldset label {
+  grid-column: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Text inputs inside fieldsets (e.g., posture explanation) align right as well */
+#inspection-form fieldset input[type="text"] {
+  grid-column: 2;
+  width: min(420px, 100%);
+}
+
+/* Consistent control sizes */
+#inspection-form select,
+#inspection-form textarea,
+#inspection-form input[type="text"] {
+  padding: 10px;
+}
+
+/* Subtle, accessible focus states for dark UI */
+#inspection-form input:focus,
+#inspection-form select:focus,
+#inspection-form textarea:focus {
+  outline: 2px solid #ff6f61;
+  outline-offset: 2px;
+  border-color: #ff6f61;
+}
+
+/* Fine-tune small radios/checkboxes for click/tap ergonomics */
+#inspection-form input[type="radio"],
+#inspection-form input[type="checkbox"] {
+  transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .popup-options {
+    flex-direction: column;
+  }
+
+  .popup-options .option {
+    margin-bottom: 20px;
+  }
+}
+

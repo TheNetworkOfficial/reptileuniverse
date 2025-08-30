@@ -70,4 +70,17 @@ router.put("/:id/status", async (req, res) => {
   }
 });
 
+// DELETE /api/surrenders/:id
+router.delete("/:id", async (req, res) => {
+  try {
+    const form = await Surrender.findByPk(req.params.id);
+    if (!form) return res.status(404).json({ error: "Form not found" });
+    await form.destroy();
+    return res.status(204).send();
+  } catch (err) {
+    console.error("Error deleting surrender:", err);
+    return res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;
